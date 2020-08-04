@@ -12,7 +12,7 @@ def main():
 
 
 def create_vba_projects(scripts_dir, output_dir):
-
+    """pull VBA code in the scripts folder to .vb files in the output directory"""
     sys.coinit_flags = 0  # comtypes.COINIT_MULTITHREADED
 
     # USE COMTYPES OR WIN32COM

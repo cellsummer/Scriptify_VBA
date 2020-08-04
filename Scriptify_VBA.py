@@ -1,12 +1,10 @@
 """
-Creating a simple GUI to scriptfy VBA
+Creating a simple GUI to scriptify VBA
 """
 
 from gooey import Gooey, GooeyParser
 import time
 from pull_vba import create_vba_projects
-
-# from message import display_message
 
 
 @Gooey(dump_build_config=True, program_name="Scriptify Excel VBA files")
