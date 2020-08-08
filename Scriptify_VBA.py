@@ -4,7 +4,7 @@ Creating a simple GUI to scriptify VBA
 
 from gooey import Gooey, GooeyParser
 import time
-from pull_vba import create_vba_projects
+from core.pull_vba import create_vba_projects
 
 
 @Gooey(dump_build_config=True, program_name="Scriptify Excel VBA files")

@@ -6,8 +6,8 @@ from win32com.client import Dispatch
 
 
 def main():
-    scripts_dir = "C:\\Users\\aa\\Documents\\GitHub\\Test\\ExcelModels"
-    output_dir = "C:\\Users\\aa\\Documents\\GitHub\\Test\\ExcelModels"
+    scripts_dir = ".\Excel_Dir"
+    output_dir = ".\Excel_Dir"
     create_vba_projects(scripts_dir, output_dir)
 
 
