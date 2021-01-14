@@ -176,3 +176,27 @@ Private Function AddSuffix(ByVal Path As String, ByVal Suffix As String) As Stri
     Extension = FileExtension(Path)
     AddSuffix = Left(Path, InStr(Path, Extension) - 1) & Suffix & Extension
 End Function
+                                                            
+                                                            
+                                                            '####### To use the class ######'
+Sub Test_SQL_Connection()
+
+Dim SQL As New clsSQL
+
+With SQL
+        '### Initialize SQL connection
+        .ServerName = Range("SQL.Server").Value
+        .CatalogName = Range("SQL.Catalog").Value
+        .DebugMode = Range("SQL.EnableLog").Value
+        .Execute ("select top 10 * from [RUN04_hz]")
+         numVars = .Results.Fields.Count
+         ReDim vars(1 To numVars) As String
+         For j = 1 To numVars
+               vars(j) = .Results.Fields(j - 1).Name
+         Next j
+         Sheets("results").[B2].Resize(1, numVars) = (vars)
+         Sheets("results").[B3].CopyFromRecordset .Results
+End With
+
+
+End Sub
