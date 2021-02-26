@@ -1,0 +1,118 @@
+'Microsoft Scripting Runtime
+
+Function EggDrop(ByVal n As Long, ByVal k As Long, Optional ByRef memo As Variant) As Long
+
+Dim x As Long
+Dim strKey As String
+Dim Vx As Variant
+
+If IsMissing(memo) Then
+    Set memo = New Dictionary
+End If
+
+strKey = CStr(n) & "_" & CStr(k)
+
+'trivial case
+If memo.Exists(strKey) Then
+    EggDrop = memo(strKey)
+ElseIf n = 0 Then
+    EggDrop = 0
+ElseIf k = 0 Then
+    EggDrop = 65535 'very large number
+ElseIf n = 1 Then
+    EggDrop = 1
+
+Else
+    ReDim Vx(n - 1) As Long
+    'f(n,k) = 1 + min{max(f(x-1, k-1), f(n-x, k))} for x in {1,2,...n}
+    For x = 1 To n
+        Vx(x - 1) = WorksheetFunction.Max(EggDrop(x - 1, k - 1, memo), EggDrop(n - x, k, memo))
+    Next x
+    
+    EggDrop = 1 + WorksheetFunction.Min(Vx)
+    If Not memo.Exists(strKey) Then
+        memo.Add strKey, EggDrop
+    End If
+End If
+
+End Function
+
+Function LCS_cnt(ByVal strA As String, ByVal strB As String, Optional ByRef memo As Variant) As Long
+' returns the length of the longest comment sequent (LCS)
+Dim key As String
+Dim strLastA As String
+Dim strLastB As String
+
+If IsMissing(memo) Then
+    Set memo = New Dictionary
+End If
+
+key = strA & "_" & strB
+
+' trivial case
+If memo.Exists(key) Then
+    LCS_cnt = memo(key)
+ElseIf strA = "" Or strB = "" Then
+    LCS_cnt = 0
+ElseIf Len(strA) = 1 And Len(strB) = 1 Then
+    If strA = strB Then LCS_cnt = 1 Else LCS_cnt = 0
+Else
+    strLastA = Right(strA, 1)
+    strLastB = Right(strB, 1)
+    If strLastA = strLastB Then
+        LCS_cnt = LCS_cnt(Left(strA, Len(strA) - 1), Left(strB, Len(strB) - 1), memo) + 1
+    Else
+        LCS_cnt = WorksheetFunction.Max(LCS_cnt(strA, Left(strB, Len(strB) - 1), memo), LCS_cnt(Left(strA, Len(strA) - 1), strB, memo))
+    End If
+    memo.Add key, LCS_cnt
+End If
+
+End Function
+
+
+Function LCS(ByVal strA As String, ByVal strB As String, Optional ByRef memo As Variant) As String
+' returns the longest comment sequent (LCS)
+Dim key As String
+Dim strLastA As String
+Dim strLastB As String
+
+If IsMissing(memo) Then
+    Set memo = New Dictionary
+End If
+
+'how to define proper keys ?
+key = strA & "_" & strB
+
+' trivial case
+If memo.Exists(key) Then
+    LCS = memo(key)
+ElseIf strA = "" Or strB = "" Then
+    LCS = ""
+ElseIf Len(strA) = 1 And Len(strB) = 1 Then
+    If strA = strB Then LCS = strA Else LCS = ""
+Else
+    strLastA = Right(strA, 1)
+    strLastB = Right(strB, 1)
+    If strLastA = strLastB Then
+        LCS = LCS(Left(strA, Len(strA) - 1), Left(strB, Len(strB) - 1), memo) & strLastA
+    Else
+        LCS_1 = LCS(strA, Left(strB, Len(strB) - 1), memo)
+        LCS_2 = LCS(Left(strA, Len(strA) - 1), strB, memo)
+        If Len(LCS_1) > Len(LCS_2) Then LCS = LCS_1 Else LCS = LCS_2
+        'LCS_cnt = WorksheetFunction.Max(LCS_cnt(strA, Left(strB, Len(strB) - 1), memo), LCS_cnt(Left(strA, Len(strA) - 1), strB, memo))
+    End If
+    memo.Add key, LCS
+End If
+
+End Function
+
+
+Sub test()
+
+Dim n As Long
+
+For n = 1 To 300
+    Debug.Print EggDrop(n, 2)
+Next n
+
+End Sub
