@@ -21,14 +21,15 @@ class MetaSql():
         while str.strip(self.lines[-1]) == '':
             self.lines.pop(-1)
 
-    def get_header_and_body(self, ):
-        if self.lines[0][:3] != '---':
+    def _get_header_and_body(self, ):
+        # populate self.header and self.body
+        if self.lines[0].strip() != '---':
             self.header = []
             self.body = self.lines
             return
 
         for i in range(1, len(self.lines)):
-            if self.lines[i][:3] == '---':
+            if self.lines[i].strip() == '---':
                 break
             else:
                 self.header.append(self.lines[i])
@@ -37,36 +38,40 @@ class MetaSql():
 
         return
 
-    def replace_placeholders(self,):
+    def _replace_placeholders(self,):
+        # read header to a dictionary {var_key: var_value}
         vars = {}
         for line in self.header:
             kvp = line.split(":")
             vars[kvp[0].strip()] = kvp[1].strip()
 
+        # loop through all lines and replace placeholders
         for i, line in enumerate(self.body):
-            keys = re.findall(r'\{\{.*\}\}', line)
-            for key in keys:
-                var_key = key[2:-2]
-                line = line.replace(key, vars[var_key])
+            # keys are {{ var }}
+            placehoders = re.findall(r'\{\{.*\}\}', line)
+            for p in placehoders:
+                # stip out the double bracelets
+                var_key = p[2:-2].strip()
+                line = line.replace(p, vars[var_key])
             self.body[i] = line
 
         return
 
-    def save_compiled_sql(self, ):
+    def _save_compiled_sql(self, ):
         fname = os.path.splitext(self.meta_file)[0]
         fext = os.path.splitext(self.meta_file)[1]
 
         compiled_fname = fname + "_compiled"
 
-        with open(f'{compiled_fname}.{fext}', 'w') as f:
+        with open(f'{compiled_fname}{fext}', 'w') as f:
             f.writelines(self.body)
 
         return
 
     def compile(self, ):
-        self.get_header_and_body()
-        self.replace_placeholders()
-        self.save_compiled_sql()
+        self._get_header_and_body()
+        self._replace_placeholders()
+        self._save_compiled_sql()
 
 
 def main(meta_file):

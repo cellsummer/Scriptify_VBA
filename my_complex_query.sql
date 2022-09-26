@@ -6,13 +6,13 @@ SET NOCOUNT ON;
 
 WITH cashflows AS (
     SELECT *
-    FROM {{results_table}}
+    FROM {{ results_table }}
 ),
 discount AS (
     SELECT ScnNumber,
         ProjMonth,
         Discount_Factor
-    FROM {{scn_table}}
+    FROM {{ scn_table }}
 
 )
 

@@ -1,7 +1,16 @@
 from core_funcs import ExcelData
 import typer
+from parse_sql import MetaSql
 
 app = typer.Typer()
+
+
+@app.command()
+def parse_sql(file_path: str):
+    MetaSql(file_path).compile()
+    print('sql has parsed successfully!')
+
+    return 0
 
 
 @app.command()
