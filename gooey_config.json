@@ -1,6 +1,6 @@
 {
   "language": "english",
-  "target": "\"c:\\Users\\aa\\Documents\\GitHub\\Scriptify_VBA\\venv\\Scripts\\python.exe\" -u \"c:\\Users\\aa\\Documents\\GitHub\\Scriptify_VBA\\Scriptify_VBA.py\"",
+  "target": "\"C:\\Users\\cells\\Documents\\Github\\Scriptify_VBA\\venv\\Scripts\\python.exe\" -u \".\\Scriptify_VBA.py\"",
   "suppress_gooey_flag": false,
   "program_name": "Scriptify Excel VBA files",
   "program_description": "Convert VBA scripts embedded in Excels into folder structure",
@@ -30,10 +30,14 @@
   "manual_start": false,
   "monospace_display": false,
   "image_dir": "::gooey/default",
-  "language_dir": "c:\\Users\\aa\\Documents\\GitHub\\Scriptify_VBA\\venv\\lib\\site-packages\\gooey\\languages",
+  "language_dir": "C:\\Users\\cells\\Documents\\Github\\Scriptify_VBA\\venv\\lib\\site-packages\\gooey\\languages",
   "progress_regex": null,
   "progress_expr": null,
   "hide_progress_msg": false,
+  "timing_options": {
+    "show_time_remaining": false,
+    "hide_time_remaining_on_complete": true
+  },
   "disable_progress_bar_animation": false,
   "disable_stop_button": false,
   "navigation": "SIDEBAR",
@@ -51,7 +55,7 @@
   "terminal_panel_color": "#F0F0F0",
   "terminal_font_color": "#000000",
   "terminal_font_family": null,
-  "terminal_font_weight": null,
+  "terminal_font_weight": 400,
   "terminal_font_size": null,
   "richtext_controls": false,
   "error_color": "#ea7878",
@@ -67,19 +71,19 @@
           "name": "required_args_msg",
           "items": [
             {
-              "id": "Excel directory",
+              "id": "input",
               "type": "DirChooser",
               "cli_type": "positional",
               "required": true,
               "data": {
-                "display_name": "Excel directory",
+                "display_name": "input",
                 "help": "Specify your Excel directory",
                 "required": true,
                 "nargs": "",
                 "commands": [],
                 "choices": [],
                 "default": null,
-                "dest": "Excel directory"
+                "dest": "input"
               },
               "options": {
                 "error_color": "#ea7878",
@@ -87,6 +91,7 @@
                 "help_color": "#363636",
                 "full_width": false,
                 "validator": {
+                  "type": "ExpressionValidator",
                   "test": "user_input and not user_input.isspace()",
                   "message": "This field is required"
                 },
@@ -96,19 +101,19 @@
               }
             },
             {
-              "id": "Output directory",
+              "id": "output",
               "type": "DirChooser",
               "cli_type": "positional",
               "required": true,
               "data": {
-                "display_name": "Output directory",
+                "display_name": "output",
                 "help": "Specify your designated project folder",
                 "required": true,
                 "nargs": "",
                 "commands": [],
                 "choices": [],
                 "default": null,
-                "dest": "Output directory"
+                "dest": "output"
               },
               "options": {
                 "error_color": "#ea7878",
@@ -116,6 +121,7 @@
                 "help_color": "#363636",
                 "full_width": false,
                 "validator": {
+                  "type": "ExpressionValidator",
                   "test": "user_input and not user_input.isspace()",
                   "message": "This field is required"
                 },

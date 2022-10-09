@@ -3,7 +3,6 @@ Creating a simple GUI to scriptify VBA
 """
 
 from gooey import Gooey, GooeyParser
-import time
 from core.pull_vba import create_vba_projects
 
 
@@ -15,10 +14,10 @@ def main():
     gui_parser = GooeyParser(description=desc)
 
     gui_parser.add_argument(
-        "Excel directory", help=input_file_help_msg, widget="DirChooser"
+        "input", help=input_file_help_msg, widget="DirChooser"
     )
     gui_parser.add_argument(
-        "Output directory", help=output_file_help_msg, widget="DirChooser"
+        "output", help=output_file_help_msg, widget="DirChooser"
     )
 
     args = gui_parser.parse_args()
