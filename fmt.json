@@ -1,0 +1,17 @@
+{
+    "tags":{
+        "fad": ["tag_gender", "tag_issue_age", "tag_product"],
+        "com": ["tag_gender", "tag_issue_age", "tag_product"],
+        "stat": ["tag_gender", "tag_issue_age", "tag_product"]
+    },
+    "assumptions":{
+        "fad": ["UL face amount table", "NAAR switch"],
+        "com": ["commission table","commission chargeback table"],
+        "stat": [
+            "stat interest rate",
+            "stat mortality rate",
+            "stat valuation"
+        ]
+    },
+    "file_path": "c:/users/wfang/fmt/fmt.xlsx"
+}
