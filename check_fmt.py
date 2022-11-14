@@ -7,7 +7,7 @@ class FMT:
     def __init__(
         self,
     ):
-        pass
+        self.none_existed_combos = []
 
     def _load_config(self, config: str):
         if not os.path.exists(config):
@@ -60,6 +60,16 @@ class FMT:
     def get_fmt_combos(tab: str):
         pass
 
+    def check_exists(self, fmt_combos, pit_combos):
+        '''
+        check if pit combos all exist in fmt_combos
+        '''
+        if set(pit_combos).issubset(set(fmt_combos)):
+            return True
+
+        self.none_existed_combos = list(set(pit_combos) - set(fmt_combos))
+        return False
+
 
 def main():
     df = pd.DataFrame(
@@ -78,6 +88,8 @@ def main():
     #     for key in row:
     #         print(key)
     print(combos)
+    print(my_fmt.check_exists(combos, combos+['ss']))
+    print(my_fmt.none_existed_combos)
 
 
 if __name__ == "__main__":
