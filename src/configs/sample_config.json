@@ -1,0 +1,5 @@
+{
+  "server": "my_local_server",
+  "db": "my_database",
+  "table": "my_local_table"
+}

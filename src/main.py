@@ -1,5 +1,5 @@
 # from gooey import Gooey, GooeyParser
-from utils.logging import logger
+from utils.utils import logger, read_config
 
 
 # @Gooey(program_name='sample program')
@@ -20,9 +20,15 @@ from utils.logging import logger
 #         print(f'running app2 with config {main_args.config}')
 
 def test():
-    logger.debug('test program started!')
-    print("this is a test program")
-    logger.debug('test program ended!')
+    logger.debug(f'Running {__file__}')
+
+    config = read_config("configs/sample_config.json")
+    logger.debug('config file loaded')
+    logger.debug(config['server'])
+    logger.debug(config['db'])
+    logger.debug(config['table'])
+    
+    logger.debug(f'Finished running {__file__}')
 
 if __name__ == '__main__':
     test()
