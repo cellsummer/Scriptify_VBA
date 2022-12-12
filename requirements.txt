@@ -2,3 +2,4 @@ gooey
 pyodbc
 pandas
 numpy
+openpyxl
