@@ -7,9 +7,18 @@ from os.path import exists
 from pathlib import Path
 
 # from openpyxl.utils.dataframe import dataframe_to_rows
-import openpyxl
+# import openpyxl
 import pandas as pd
 import shutil
+import logging
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.FileHandler("log_file.log"), logging.StreamHandler()],
+)
+logger = logging.getLogger(__name__)
 
 
 class AttributeDict(dict):
@@ -108,18 +117,24 @@ def write_df_to_excel(
             startrow=startrow,
         )
 
-
-fields = ["server", "db", "table"]
-
-config = read_config("configs/my_config.json", fields)
-# config = read_config("configs/my_config.json", )
-sample_df = pd.DataFrame(data={"fields": fields})
-xl_file = "temp/out1.xlsx"
-
-write_df_to_excel(sample_df, xl_file, "reserves", startrow=4)
+    logger.info("DataFrame has been written to %s - %s", excel_file, excel_tab)
 
 
-print(config)
-print(config.server)
-print(config.db)
-print(config["table"])
+def playaround():
+    fields = ["server", "db", "table"]
+
+    config = read_config("configs/my_config.json", fields)
+    # config = read_config("configs/my_config.json", )
+    sample_df = pd.DataFrame(data={"fields": fields})
+    xl_file = "temp/out1.xlsx"
+
+    write_df_to_excel(sample_df, xl_file, "reserves", startrow=4)
+
+    logger.info(config)
+    print(config.server)
+    print(config.db)
+    print(config["table"])
+
+
+if __name__ == "__main__":
+    playaround()
