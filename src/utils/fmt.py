@@ -21,8 +21,8 @@ def merge_df_by_regex(
     # get the index from both dataframe that have the key-pattern match
     indices = [
         (regex_idx, main_idx)
-        for regex_idx, pattern in enumerate(regex_df[regex_col])
-        for main_idx, key in enumerate(main_df[key_col])
+        for regex_idx, pattern in enumerate(regex_df.loc[:, regex_col])
+        for main_idx, key in enumerate(main_df.loc[:, key_col])
         if re.match(pattern, key)
     ]
     regex_idx, main_idx = zip(*indices)
