@@ -1,0 +1,8 @@
+{
+  "source": "sql",
+  "server": "server_name",
+  "db": "database_name",
+  "proj_mth_col": "ProjMth",
+  "scenario_number_col": "ScenarioNumber",
+  "discount_col": "discount factor - risk free rate"
+}

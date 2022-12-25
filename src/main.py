@@ -5,6 +5,7 @@ from utils.utils import logger, read_config
 from utils.pv_calcs import calc_pv
 from utils.fmt import map_with_wildcard
 import pandas as pd
+from apps.cfs import CFs
 
 
 # @Gooey(program_name='sample program')
@@ -108,6 +109,16 @@ def test_io():
     print(fmt_pf)
 
 
+def test_cfs():
+    params = read_config("configs/cfs_config.json")
+    df = pd.DataFrame(data=pd.read_csv("temp/ifrs17_cfs.csv"))
+    cfs = CFs(params, df)
+    cfs.rename_df_columns()
+    cfs.calc_equivalent_weights()
+    print(cfs.df[cfs.df["t"] < 5].weights)
+
+
 if __name__ == "__main__":
     # test_fmt_mapping()
-    test_io()
+    # test_io()
+    test_cfs()
