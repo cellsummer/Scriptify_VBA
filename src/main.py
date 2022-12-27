@@ -113,9 +113,20 @@ def test_cfs():
     params = read_config("configs/cfs_config.json")
     df = pd.DataFrame(data=pd.read_csv("temp/ifrs17_cfs.csv"))
     cfs = CFs(params, df)
-    cfs.rename_df_columns()
     cfs.calc_equivalent_weights()
-    print(cfs.df[cfs.df["t"] < 5].weights)
+    cfs.calc_ess_cfs()
+    print(cfs.df[cfs.df["t"] < 5].ess_weights)
+    print(cfs.df[cfs.df["scenario_no"] == -1])
+    res = cfs.calc_pvs()
+    print(res)
+    print("result of ess: ", f'{res.loc[-1, "premiums_renewal"]:,.2f}')
+    print(
+        "result of stochastic scenarios:",
+        f'{0.5 * (res.loc[1, "premiums_renewal"] + res.loc[2, "premiums_renewal"]): ,.2f}',
+    )
+    print(cfs.df.columns)
+    print(cfs.df.head())
+    print(cfs.df.tail())
 
 
 if __name__ == "__main__":
