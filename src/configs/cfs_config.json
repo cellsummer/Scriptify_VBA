@@ -10,5 +10,46 @@
     "Premiums – first year",
     "Premiums – renewal",
     "Claims"
-  ]
+  ],
+  "cfs_groupings": {
+    "fire_gmm": {
+      "premium": {
+        "premiums_first_year": 1,
+        "premiums_renewal": 1
+      },
+      "claim": {
+        "claims": -1
+      },
+      "investment_component": {},
+      "expense": {},
+      "acquisition": {}
+    },
+    "fire_vfa": {
+      "premium": {},
+      "claim": {},
+      "investment_component": {},
+      "expense": {},
+      "acquisition": {}
+    },
+    "kc4": {},
+    "user_define": {}
+  },
+  "bel_definitions": {
+    "fire_gmm": {
+      "premium": -1,
+      "claim": 1,
+      "investment_component": 1,
+      "expense": 1,
+      "acquisition": 1
+    },
+    "fire_vfa": {
+      "premium": {},
+      "claim": {},
+      "investment_component": {},
+      "expense": {},
+      "acquisition": {}
+    },
+    "kc4": {},
+    "user_define": {}
+  }
 }
