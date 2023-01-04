@@ -1,7 +1,15 @@
 {
   "source": "sql",
-  "server": "server_name",
-  "db": "database_name",
+  "server": {
+    "inforce_server": "server_name",
+    "results_server": "server_name"
+  },
+  "db": {
+    "inforce_db": "db_name",
+    "results_db": "db_name"
+  },
+  "cashflow_file": "IFRS17_202206_FLVUL_7",
+  "scenario_file": "IFRS17_SCEN_202206_7",
   "proj_mth_col": "ProjMth",
   "scenario_number_col": "ScenarioNumber",
   "discount_col": "discount factor - risk free rate",

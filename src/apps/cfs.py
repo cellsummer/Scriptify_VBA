@@ -11,6 +11,74 @@ import re
 import pandas as pd
 from utils.utils import AttributeDict, read_config, logger
 from typing import Dict
+from sqlalchemy import create_engine
+
+class CFDataHandler:
+    '''handles the data to feed into class CFs'''
+    def __init__(self, config: AttributeDict):
+        self.config = config
+
+    def load_cfs(self,) -> pd.DataFrame: 
+        '''main method to load cfs data'''
+        scenario_df = self._load_scenario_file()
+        cashflow_df = self._load_cashflow_file()
+
+        return pd.concat([scenario_df, cashflow_df], axis=1)
+
+    def _load_scenario_file(self,) -> pd.DataFrame :
+        '''load scenario file'''
+        scn_number = self.config.scenario_number_col
+        proj_mth = self.config.proj_mth_col
+        disc = self.config.discount_col
+
+        if self.config.source == 'sql':
+            server = self.config.server['inforce_server']
+            db = self.config.db['inforce_db']
+            tbl = self.config.scenario_file
+            sql = f'SELECT [{scn_number}], [{proj_mth}], [{disc}]  FROM {tbl}'
+            connection_str = f'mssql+pyodbc://{server}:{db}'
+            conn = create_engine(connection_str)
+
+            df = pd.read_sql_query(sql, conn)
+            # TODO: scenarios may miss t=0 values 
+            # TODO: need to have a way to set the index properly
+            df.index = df[scn_number] * 841 + df[proj_mth]
+            
+        elif self.config.source == 'csv':
+            # TODO: depracated
+            data_file = self.config.scenario_file
+            df = pd.read_csv(data_file)
+            df = df.loc[:, [scn_number,proj_mth,disc]]
+        else:
+            logger.error("Unsupported source for scenario file!")
+            df = pd.DataFrame()
+
+        return df
+    
+    def _load_cashflow_file(self, ) -> pd.DataFrame:
+        '''load cf projections'''
+        scn_number = self.config.scenario_number_col
+        proj_mth = self.config.proj_mth_col
+
+        if self.config.source == 'sql':
+            server = self.config.server['results_server']
+            db = self.config.db['results_db']
+            tbl = self.config.cashflow_file
+            sql = f'SELECT * FROM {tbl}'
+            connection_str = f'mssql+pyodbc://{server}:{db}'
+            conn = create_engine(connection_str)
+            df = pd.read_sql_query(sql, conn)
+            # TODO: need to have a way to set the index properly
+            df.index = df[scn_number] * 841 + df[proj_mth]
+            
+        elif self.config.source == 'csv':
+            data_file = self.config.cashflow_file
+            df = pd.read_csv(data_file)
+        else:
+            logger.error("Unsupported source for scenario file!")
+            df = pd.DataFrame()
+
+        return df
 
 
 class CFs:
@@ -31,24 +99,24 @@ class CFs:
         """
         self.params = params
         self.df = df
-        self.rename_df_columns()
-        self.clean_params()
         self.grouped_cfs = []
+        self._rename_df_columns()
+        self._clean_params()
 
-    def clean_params(
+    def _clean_params(
         self,
     ) -> None:
         """clean up the params entries from user\'s config"""
         # standardize cfs
         for idx, cf_name in enumerate(self.params.cfs):
-            self.params.cfs[idx] = self.standardize_column_name(cf_name)
+            self.params.cfs[idx] = self._standardize_column_name(cf_name)
 
         # common filters
         self.filter_is_stochastic = (self.df[self._COL_SCENARIO_NUMBER] > 0) & (
             self.df[self._COL_SCENARIO_NUMBER] <= 1000
         )
 
-    def rename_df_columns(self) -> None:
+    def _rename_df_columns(self) -> None:
         """rename df columns"""
         # rename must-have columns
         standard_columns_rename = {
@@ -61,7 +129,7 @@ class CFs:
         self.df.rename(columns=standard_columns_rename, inplace=True)
 
         # make all column names lower case letter connected with underscores
-        self.df.rename(mapper=self.standardize_column_name, axis=1, inplace=True)
+        self.df.rename(mapper=self._standardize_column_name, axis=1, inplace=True)
 
         return
 
@@ -232,7 +300,7 @@ class CFs:
 
 
     @staticmethod
-    def standardize_column_name(raw_name: str) -> str:
+    def _standardize_column_name(raw_name: str) -> str:
         """standardize column names
         All column names should be lower case, no spaces(replace with underscores); no special chars
         Allowed characters are [a-z_0-9]
