@@ -6,7 +6,7 @@ from utils.pv_calcs import calc_pv
 from utils.fmt import map_with_wildcard
 import pandas as pd
 from typing import Any
-from apps.cfs import CFs
+from apps.cfs import CFs, CFDataHandler
 
 
 def run_programs(program_name: str, args: Any) -> None: 
@@ -16,7 +16,8 @@ def run_programs(program_name: str, args: Any) -> None:
         logger.info("Finished running fmt.")
     elif program_name == 'cfs':
         logger.info("Start running cfs ...")
-        test_cfs(args)
+        # test_cfs(args)
+        test_data_handle(args)
         logger.info("Finished running cfs.")
     else:
         logger.error(f"Incorrect command: {program_name} !")
@@ -129,6 +130,10 @@ def test_cfs(config: str):
     # print(cfs.df.tail())
     # cfs.df.to_csv('temp/cfs.csv')
 
+def test_data_handle(config:str):
+    cf_config = read_config(config)
+    data_handle = CFDataHandler(cf_config) 
+    print(data_handle._create_slicing_condition(cf_config.slice))
 
 if __name__ == "__main__":
     logger.error("Please run thorugh main.py or main-gui.py")

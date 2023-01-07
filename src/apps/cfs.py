@@ -10,7 +10,7 @@
 import re
 import pandas as pd
 from utils.utils import AttributeDict, read_config, logger
-from typing import Dict
+from typing import Dict, Any
 from sqlalchemy import create_engine
 
 class CFDataHandler:
@@ -23,7 +23,9 @@ class CFDataHandler:
         scenario_df = self._load_scenario_file()
         cashflow_df = self._load_cashflow_file()
 
-        return pd.concat([scenario_df, cashflow_df], axis=1)
+        df = cashflow_df.join(scenario_df).reset_index()
+
+        return df 
 
     def _load_scenario_file(self,) -> pd.DataFrame :
         '''load scenario file'''
@@ -41,14 +43,14 @@ class CFDataHandler:
 
             df = pd.read_sql_query(sql, conn)
             # TODO: scenarios may miss t=0 values 
-            # TODO: need to have a way to set the index properly
-            df.index = df[scn_number] * 841 + df[proj_mth]
+            df.set_index([scn_number, proj_mth], inplace=True)
             
         elif self.config.source == 'csv':
             # TODO: depracated
             data_file = self.config.scenario_file
             df = pd.read_csv(data_file)
             df = df.loc[:, [scn_number,proj_mth,disc]]
+            df.set_index([scn_number, proj_mth], inplace=True)
         else:
             logger.error("Unsupported source for scenario file!")
             df = pd.DataFrame()
@@ -59,26 +61,49 @@ class CFDataHandler:
         '''load cf projections'''
         scn_number = self.config.scenario_number_col
         proj_mth = self.config.proj_mth_col
+        slice = self.config.slice
 
         if self.config.source == 'sql':
             server = self.config.server['results_server']
             db = self.config.db['results_db']
             tbl = self.config.cashflow_file
             sql = f'SELECT * FROM {tbl}'
+            if slice:
+                sql += f' WHERE {self._create_slicing_condition(slice)}'
             connection_str = f'mssql+pyodbc://{server}:{db}'
             conn = create_engine(connection_str)
             df = pd.read_sql_query(sql, conn)
-            # TODO: need to have a way to set the index properly
-            df.index = df[scn_number] * 841 + df[proj_mth]
+            df.set_index([scn_number,proj_mth], inplace=True)
             
         elif self.config.source == 'csv':
             data_file = self.config.cashflow_file
             df = pd.read_csv(data_file)
+            df.set_index([scn_number,proj_mth], inplace=True)
         else:
             logger.error("Unsupported source for scenario file!")
             df = pd.DataFrame()
 
         return df
+
+    @staticmethod
+    def _create_slicing_condition(slice: dict[str, Any]) -> str:
+        '''based on the slice dictionary, create a condition string
+        Args:
+            slice: dictionary defining slicing conditions
+        Returns:
+            str: condition string that can be used in the sql query
+        Examples:
+            >>> slicing = {'name': 'Alex', 'age', 15}
+            >>> _create_slicing_condition(slicing)
+            >>> [name] = 'Alex' AND [age] = 15
+        '''
+        conditions = []
+        for key, val in slice.items():
+            if type(val) == str:
+                val = f"'{val}'"
+            conditions.append(f"[{key}] = {val}")
+
+        return ' AND '.join(conditions)
 
 
 class CFs:
