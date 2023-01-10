@@ -1,0 +1,990 @@
+This XML file does not appear to have any style information associated with it. The document tree is shown below.
+<TXLife>
+<UserAuthResponse>
+<TransResult>
+<ResultCode tc="1">The transaction was processed Successfully with no more information</ResultCode>
+<ConfirmationID>TXADMIN:1673390538266</ConfirmationID>
+</TransResult>
+<SvrDate>2023-01-10</SvrDate>
+<SvrTime>22:42:18+00:00</SvrTime>
+</UserAuthResponse>
+<TXLifeResponse PrimaryObjectID="Holding_5737545">
+<TransRefGUID>C2E2BF13-7EFE-30D1-41C8-F85C13440216</TransRefGUID>
+<TransType tc="203">Holding</TransType>
+<TransExeDate>2023-01-10</TransExeDate>
+<TransExeTime>22:42:18+00:00</TransExeTime>
+<TransMode tc="2">Original request. Sent by sender.</TransMode>
+<TransResult>
+<ResultCode tc="2">The transaction was processed successfully but some condition causes information to be returned. This is sometimes informational only and sometimes a warning.</ResultCode>
+<ConfirmationID>TXADMIN:(203):1673390538942</ConfirmationID>
+</TransResult>
+<OLifE>
+<Holding id="Holding_5737545">
+<HoldingTypeCode tc="2">Policy</HoldingTypeCode>
+<CarrierAdminSubSystem tc="2">Administration</CarrierAdminSubSystem>
+<LiabilityValue>0</LiabilityValue>
+<AsOfDate>2023-01-10</AsOfDate>
+<LastFinActivityDate>2023-01-09</LastFinActivityDate>
+<LastAnniversaryDate>2022-08-14</LastAnniversaryDate>
+<RestrictionCode tc="9">Special Conditions</RestrictionCode>
+<Policy id="Policy_5737546">
+<CarrierAdminSystem>CYBERLIFE_9701</CarrierAdminSystem>
+<PolNumber>014540132</PolNumber>
+<ProductType tc="5">Indexed Universal Life</ProductType>
+<ProductCode>EI159F</ProductCode>
+<CarrierCode>07-86231</CarrierCode>
+<PlanName>Transamerica Financial Foundation IUL</PlanName>
+<AdministeringCarrierCode>70</AdministeringCarrierCode>
+<ShortName>FFIULLTC</ShortName>
+<PolicyStatus tc="1">Active (inforce).</PolicyStatus>
+<IssueType tc="1">Full Underwriting</IssueType>
+<Jurisdiction tc="6">California</Jurisdiction>
+<PolicyValue>12672.66</PolicyValue>
+<PolFee>0</PolFee>
+<EffDate>2013-08-14</EffDate>
+<PaidToDate>2023-02-14</PaidToDate>
+<BilledToDate>2023-01-05</BilledToDate>
+<PaymentMode tc="4">Month or Monthly</PaymentMode>
+<PaymentAmt>275.59</PaymentAmt>
+<AnnualPaymentAmt>275.59</AnnualPaymentAmt>
+<PaymentMethod tc="7">Electronic Funds Transfer</PaymentMethod>
+<PaymentDraftDay>5</PaymentDraftDay>
+<LastDeductedExpenseCharges>158.35</LastDeductedExpenseCharges>
+<RatedInd tc="0">False</RatedInd>
+<Life id="Life_5737565">
+<GrossPremAmtATD>1102.36</GrossPremAmtATD>
+<TargetPremAmt>4349.3</TargetPremAmt>
+<TotCumPremAmt>25380.46</TotCumPremAmt>
+<CumMinPremAmt>5545.94</CumMinPremAmt>
+<LastPremAmt>275.59</LastPremAmt>
+<LastPremDate>2023-01-05</LastPremDate>
+<MinPremAmt>275.59</MinPremAmt>
+<GrossPremAmtITD>25104.87</GrossPremAmtITD>
+<FullyCommPremAnnualized>0</FullyCommPremAnnualized>
+<InitialPremAmt>350</InitialPremAmt>
+<LoanIntType tc="1">Fixed loan interest rate</LoanIntType>
+<MaxAvailableLoan>6004.94</MaxAvailableLoan>
+<FaceAmt>254196</FaceAmt>
+<NetSurrValueAmt>6102.66</NetSurrValueAmt>
+<SurrenderChargeAmt>6570</SurrenderChargeAmt>
+<CurrIntRate>0.75</CurrIntRate>
+<GrossWthdrwlAmt>0</GrossWthdrwlAmt>
+<Coverage id="Coverage_5737575">
+<PlanName>Transamerica Financial Foundation IUL</PlanName>
+<ShortName>FFIULLTC</ShortName>
+<ProductCode>EI159F</ProductCode>
+<CovNumber>01</CovNumber>
+<FormNo>IUL06</FormNo>
+<LifeCovStatus tc="1">Active (inforce).</LifeCovStatus>
+<IndicatorCode tc="1">Base</IndicatorCode>
+<DeathBenefitOptType tc="1">Level (DB = Face)</DeathBenefitOptType>
+<CurrentAmt>254196</CurrentAmt>
+<IntialNumberOfUnits>250</IntialNumberOfUnits>
+<CurrentNumberOfUnits>254.196</CurrentNumberOfUnits>
+<ValuePerUnit>1000</ValuePerUnit>
+<EffDate>2013-08-14</EffDate>
+<TermDate>2085-08-14</TermDate>
+<PremiumPerUnit>0.2</PremiumPerUnit>
+<ValuationClassType tc="2"/>
+<ValuationBaseSeries>59F</ValuationBaseSeries>
+<ValuationSubSeries>11</ValuationSubSeries>
+<CovOption id="CovOption_5737580">
+<OLifEExtension ExtensionCode="CovOptionExtension" VendorCode="37">
+<CovOptionExtension id="CovOptionExtension_5737581">
+<GDBSkipPaymentDuration>70</GDBSkipPaymentDuration>
+</CovOptionExtension>
+</OLifEExtension>
+</CovOption>
+<LifeParticipant PartyID="Party_5737684" id="LifeParticipant_5737687">
+<ParticipantName>AVTAR S SAHOTA </ParticipantName>
+<LifeParticipantRoleCode tc="7">Beneficiary - Primary</LifeParticipantRoleCode>
+<ParticipationPct>0</ParticipationPct>
+<BeneficiaryAmountDistribution>0</BeneficiaryAmountDistribution>
+<DistributionOption tc="1">Equal</DistributionOption>
+<BeneficiaryDesignation tc="1">Named</BeneficiaryDesignation>
+<BeneficiaryRoleCode tc="1">Spouse</BeneficiaryRoleCode>
+</LifeParticipant>
+<LifeParticipant PartyID="Party_5737688" id="LifeParticipant_5737691">
+<ParticipantName>SANDEEP K SAHOTA </ParticipantName>
+<LifeParticipantRoleCode tc="7">Beneficiary - Primary</LifeParticipantRoleCode>
+<ParticipationPct>0</ParticipationPct>
+<BeneficiaryAmountDistribution>0</BeneficiaryAmountDistribution>
+<DistributionOption tc="1">Equal</DistributionOption>
+<BeneficiaryDesignation tc="1">Named</BeneficiaryDesignation>
+<BeneficiaryRoleCode tc="2">Child</BeneficiaryRoleCode>
+</LifeParticipant>
+<LifeParticipant PartyID="Party_5737692" id="LifeParticipant_5737695">
+<ParticipantName>SATWANT S SAHOTA </ParticipantName>
+<LifeParticipantRoleCode tc="7">Beneficiary - Primary</LifeParticipantRoleCode>
+<ParticipationPct>0</ParticipationPct>
+<BeneficiaryAmountDistribution>0</BeneficiaryAmountDistribution>
+<DistributionOption tc="1">Equal</DistributionOption>
+<BeneficiaryDesignation tc="1">Named</BeneficiaryDesignation>
+<BeneficiaryRoleCode tc="2">Child</BeneficiaryRoleCode>
+</LifeParticipant>
+<LifeParticipant PartyID="Party_5737696" id="LifeParticipant_5737701">
+<ParticipantName>JASWINDER K SAHOTA </ParticipantName>
+<LifeParticipantRoleCode tc="1">Primary Insured</LifeParticipantRoleCode>
+<IssueAge>48</IssueAge>
+<IssueGender tc="2">Female</IssueGender>
+<UnderwritingClass tc="1003700921">Non-Tobacco</UnderwritingClass>
+<OLifEExtension ExtensionCode="LifeParticipantExtension" VendorCode="37">
+<LifeParticipantExtension id="LifeParticipantExtension_5737702">
+<ApplicationRateClass tc="1003700921">Non-Tobacco</ApplicationRateClass>
+</LifeParticipantExtension>
+</OLifEExtension>
+</LifeParticipant>
+<LifeParticipant PartyID="Party_5737696" id="LifeParticipant_5737710">
+<LifeParticipantRoleCode tc="18">Owner</LifeParticipantRoleCode>
+</LifeParticipant>
+<OLifEExtension ExtensionCode="CoverageExtension" VendorCode="37">
+<CoverageExtension id="CoverageExtension_5737579">
+<RenewalRateType tc="2">Select Renewable</RenewalRateType>
+<RenewalRatePremType tc="1">Coverage</RenewalRatePremType>
+<RenewalRateBenefitType>*</RenewalRateBenefitType>
+<RenewalRateBenefitSubType>*</RenewalRateBenefitSubType>
+<RenewalRateGender tc="2">Female</RenewalRateGender>
+<RenewalRateBand>A</RenewalRateBand>
+<RenewalRatePersonCode>00</RenewalRatePersonCode>
+</CoverageExtension>
+</OLifEExtension>
+</Coverage>
+<Coverage id="Coverage_5737582">
+<PlanName>Accelerated Death Benefit Rider</PlanName>
+<ShortName>FFIULABR</ShortName>
+<ProductCode>EI5ACA</ProductCode>
+<CovNumber>02</CovNumber>
+<FormNo>TI04</FormNo>
+<LifeCovStatus tc="14">Terminated</LifeCovStatus>
+<IndicatorCode tc="2">Rider</IndicatorCode>
+<ExpiryDate>2014-06-14</ExpiryDate>
+<DeathBenefitOptType tc="1">Level (DB = Face)</DeathBenefitOptType>
+<CurrentAmt>187500</CurrentAmt>
+<CurrentNumberOfUnits>250</CurrentNumberOfUnits>
+<ValuePerUnit>1000</ValuePerUnit>
+<EffDate>2013-08-14</EffDate>
+<TermDate>2085-08-14</TermDate>
+<PremiumPerUnit>0.2</PremiumPerUnit>
+<ValuationClassType tc="6"/>
+<ValuationBaseSeries>ACA</ValuationBaseSeries>
+<ValuationSubSeries>11</ValuationSubSeries>
+<LifeParticipant PartyID="Party_5737696" id="LifeParticipant_5737703">
+<ParticipantName>JASWINDER K SAHOTA </ParticipantName>
+<LifeParticipantRoleCode tc="1">Primary Insured</LifeParticipantRoleCode>
+<IssueAge>48</IssueAge>
+<IssueGender tc="2">Female</IssueGender>
+<OLifEExtension ExtensionCode="LifeParticipantExtension" VendorCode="37">
+<LifeParticipantExtension id="LifeParticipantExtension_5737704">
+<ApplicationRateClass tc="0">Unknown</ApplicationRateClass>
+</LifeParticipantExtension>
+</OLifEExtension>
+</LifeParticipant>
+<OLifEExtension ExtensionCode="CoverageExtension" VendorCode="37">
+<CoverageExtension id="CoverageExtension_5737586">
+<RenewalRatePremType tc="1">Coverage</RenewalRatePremType>
+<RenewalRateBenefitType>*</RenewalRateBenefitType>
+<RenewalRateBenefitSubType>*</RenewalRateBenefitSubType>
+<RenewalRateGender tc="1">Male</RenewalRateGender>
+<RenewalRateBand>0</RenewalRateBand>
+<RenewalRatePersonCode>00</RenewalRatePersonCode>
+</CoverageExtension>
+</OLifEExtension>
+</Coverage>
+<Coverage id="Coverage_5737587">
+<PlanName>Long Term Care Rider</PlanName>
+<ShortName>LTCINC</ShortName>
+<ProductCode>EI5LTC</ProductCode>
+<CovNumber>03</CovNumber>
+<FormNo>LTCR03</FormNo>
+<LifeCovStatus tc="1">Active (inforce).</LifeCovStatus>
+<IndicatorCode tc="2">Rider</IndicatorCode>
+<DeathBenefitOptType tc="1">Level (DB = Face)</DeathBenefitOptType>
+<CurrentAmt>254196</CurrentAmt>
+<CurrentNumberOfUnits>254.196</CurrentNumberOfUnits>
+<ValuePerUnit>1000</ValuePerUnit>
+<EffDate>2014-06-14</EffDate>
+<TermDate>2085-08-14</TermDate>
+<PremiumPerUnit>0.2</PremiumPerUnit>
+<ValuationClassType tc="6"/>
+<ValuationBaseSeries>LTC</ValuationBaseSeries>
+<ValuationSubSeries>11</ValuationSubSeries>
+<LifeParticipant PartyID="Party_5737696" id="LifeParticipant_5737705">
+<ParticipantName>JASWINDER K SAHOTA </ParticipantName>
+<LifeParticipantRoleCode tc="1">Primary Insured</LifeParticipantRoleCode>
+<IssueAge>49</IssueAge>
+<IssueGender tc="2">Female</IssueGender>
+<UnderwritingClass tc="2">Preferred risk</UnderwritingClass>
+<OLifEExtension ExtensionCode="LifeParticipantExtension" VendorCode="37">
+<LifeParticipantExtension id="LifeParticipantExtension_5737706">
+<ApplicationRateClass tc="2">Preferred risk</ApplicationRateClass>
+</LifeParticipantExtension>
+</OLifEExtension>
+</LifeParticipant>
+<OLifEExtension ExtensionCode="CoverageExtension" VendorCode="37">
+<CoverageExtension id="CoverageExtension_5737591">
+<RenewalRateType tc="2">Select Renewable</RenewalRateType>
+<RenewalRatePremType tc="1">Coverage</RenewalRatePremType>
+<RenewalRateBenefitType>*</RenewalRateBenefitType>
+<RenewalRateBenefitSubType>*</RenewalRateBenefitSubType>
+<RenewalRateGender tc="2">Female</RenewalRateGender>
+<RenewalRateBand>A</RenewalRateBand>
+<RenewalRatePersonCode>00</RenewalRatePersonCode>
+</CoverageExtension>
+</OLifEExtension>
+</Coverage>
+<Coverage id="Coverage_5737592">
+<PlanName>Accelerated Death Benefit Rider</PlanName>
+<ShortName>FFIULABR</ShortName>
+<ProductCode>EI5ACA</ProductCode>
+<CovNumber>04</CovNumber>
+<FormNo>TI04</FormNo>
+<LifeCovStatus tc="1">Active (inforce).</LifeCovStatus>
+<IndicatorCode tc="2">Rider</IndicatorCode>
+<DeathBenefitOptType tc="1">Level (DB = Face)</DeathBenefitOptType>
+<CurrentAmt>190647</CurrentAmt>
+<CurrentNumberOfUnits>254.196</CurrentNumberOfUnits>
+<ValuePerUnit>1000</ValuePerUnit>
+<EffDate>2014-06-14</EffDate>
+<TermDate>2085-08-14</TermDate>
+<PremiumPerUnit>0.2</PremiumPerUnit>
+<ValuationClassType tc="6"/>
+<ValuationBaseSeries>ACA</ValuationBaseSeries>
+<ValuationSubSeries>11</ValuationSubSeries>
+<LifeParticipant PartyID="Party_5737696" id="LifeParticipant_5737707">
+<ParticipantName>JASWINDER K SAHOTA </ParticipantName>
+<LifeParticipantRoleCode tc="1">Primary Insured</LifeParticipantRoleCode>
+<IssueAge>49</IssueAge>
+<IssueGender tc="2">Female</IssueGender>
+<UnderwritingClass tc="1003700921">Non-Tobacco</UnderwritingClass>
+<OLifEExtension ExtensionCode="LifeParticipantExtension" VendorCode="37">
+<LifeParticipantExtension id="LifeParticipantExtension_5737708">
+<ApplicationRateClass tc="1003700921">Non-Tobacco</ApplicationRateClass>
+</LifeParticipantExtension>
+</OLifEExtension>
+</LifeParticipant>
+<OLifEExtension ExtensionCode="CoverageExtension" VendorCode="37">
+<CoverageExtension id="CoverageExtension_5737596">
+<RenewalRatePersonCode>00</RenewalRatePersonCode>
+</CoverageExtension>
+</OLifEExtension>
+</Coverage>
+<LifeUSA>
+<DeemedCashValueAmt>4063.58</DeemedCashValueAmt>
+<GuidelineAnnPrem>0</GuidelineAnnPrem>
+<CumGuidelineAnnPrem>0</CumGuidelineAnnPrem>
+<GuidelineSinglePrem>0</GuidelineSinglePrem>
+<MatChangeNSP>97583.95</MatChangeNSP>
+<SevenPayPrem>11891.41</SevenPayPrem>
+<AccumValue1035>0</AccumValue1035>
+<CumSevenPayPremWthdrwl>0</CumSevenPayPremWthdrwl>
+<OLifEExtension ExtensionCode="LifeUSAExtension" VendorCode="37">
+<LifeUSAExtension id="LifeUSAExtension_5737567">
+<MecType tc="4">Subject TO 7 Pay Test</MecType>
+<SevenPayTestHistory id="SevenPayTestHistory_5737568">
+<TAMRAPrems>3252.48</TAMRAPrems>
+<SevenPayYear>1</SevenPayYear>
+</SevenPayTestHistory>
+<SevenPayTestHistory id="SevenPayTestHistory_5737569">
+<TAMRAPrems>3252.48</TAMRAPrems>
+<SevenPayYear>2</SevenPayYear>
+</SevenPayTestHistory>
+<SevenPayTestHistory id="SevenPayTestHistory_5737570">
+<TAMRAPrems>3252.48</TAMRAPrems>
+<SevenPayYear>3</SevenPayYear>
+</SevenPayTestHistory>
+<SevenPayTestHistory id="SevenPayTestHistory_5737571">
+<TAMRAPrems>1626.24</TAMRAPrems>
+<SevenPayYear>4</SevenPayYear>
+</SevenPayTestHistory>
+<SevenPayTestHistory id="SevenPayTestHistory_5737572">
+<TAMRAPrems>0</TAMRAPrems>
+<SevenPayYear>5</SevenPayYear>
+</SevenPayTestHistory>
+<SevenPayTestHistory id="SevenPayTestHistory_5737573">
+<TAMRAPrems>1653.54</TAMRAPrems>
+<SevenPayYear>6</SevenPayYear>
+</SevenPayTestHistory>
+<SevenPayTestHistory id="SevenPayTestHistory_5737574">
+<TAMRAPrems>3307.08</TAMRAPrems>
+<SevenPayYear>7</SevenPayYear>
+</SevenPayTestHistory>
+<AegonSevenPayPremStartDate>2015-05-14</AegonSevenPayPremStartDate>
+<UnnecGSPOtherInsured>0</UnnecGSPOtherInsured>
+</LifeUSAExtension>
+</OLifEExtension>
+</LifeUSA>
+<OLifEExtension ExtensionCode="LifeExtension" VendorCode="37">
+<LifeExtension id="LifeExtension_5737566">
+<MinPremPeriod>2030-08-14</MinPremPeriod>
+<CumGuarValue>0</CumGuarValue>
+</LifeExtension>
+</OLifEExtension>
+<OLifEExtension ExtensionCode="LifeExtension" VendorCode="5">
+<LifeExtension/>
+</OLifEExtension>
+<OLifEExtension ExtensionCode="LifeExtension" VendorCode="37">
+<LifeExtension id="LifeExtension_5737739">
+<LoanInt>0</LoanInt>
+</LifeExtension>
+</OLifEExtension>
+<OLifEExtension ExtensionCode="LifeExtension" VendorCode="5">
+<LifeExtension>
+<MaxPartialSurrWithdrawalAvailable>5602.66</MaxPartialSurrWithdrawalAvailable>
+</LifeExtension>
+</OLifEExtension>
+</Life>
+<ApplicationInfo>
+<HOAssignedAppNumber/>
+<ApplicationType tc="1">New Application</ApplicationType>
+<ApplicationJurisdiction tc="6">California</ApplicationJurisdiction>
+<SignedDate>2013-05-24</SignedDate>
+<HOPolicyMailDate>2013-08-15</HOPolicyMailDate>
+<PlacementEndDate>2013-09-29</PlacementEndDate>
+<HOUnderwriterName/>
+<ReplacementInd tc="0">False</ReplacementInd>
+<OLifEExtension ExtensionCode="ApplicationInfoExtension" VendorCode="37">
+<ApplicationInfoExtension id="ApplicationInfoExtension_5737597">
+<NewExperienceInd tc="0">False</NewExperienceInd>
+<NewPrintInd tc="0">False</NewPrintInd>
+</ApplicationInfoExtension>
+</OLifEExtension>
+</ApplicationInfo>
+<OLifEExtension ExtensionCode="PolicyExtension" VendorCode="37">
+<PolicyExtension id="PolicyExtension_5737598">
+<FinReportingCarrierCode>07</FinReportingCarrierCode>
+<EntryCode>AC</EntryCode>
+<PriorCarrierCode>30</PriorCarrierCode>
+</PolicyExtension>
+</OLifEExtension>
+</Policy>
+<Investment id="Investment_5737742">
+<SubAccount id="SubAccount_5645903">
+<SubAccountKey SystemCode="Cyberlife_9701" VendorCode="37">G97</SubAccountKey>
+<AssetClass tc="1">Fixed (General Account Fund)</AssetClass>
+<ProductCode>G1</ProductCode>
+<ProductFullName>Global Index Account</ProductFullName>
+<CurrRate>0.75</CurrRate>
+<PricingAsOfDate>2023-01-10</PricingAsOfDate>
+<TotValue>12672.66</TotValue>
+<AllocPercent>100</AllocPercent>
+</SubAccount>
+</Investment>
+<Arrangement id="Arrangement_5738074">
+<ArrType tc="37">Standing Allocation</ArrType>
+<StartDate>2013-08-14</StartDate>
+<ArrDestination SubAcctID="SubAccount_5645903" id="ArrDestination_5738075">
+<TransferAmtType tc="3">Percentage</TransferAmtType>
+<TransferPct>100</TransferPct>
+</ArrDestination>
+</Arrangement>
+<SystemMessage id="SystemMessage_5737599">
+<MessageDescription>FNTID:WRLC0000218126**</MessageDescription>
+<MessageStartDate>2013-08-14</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737600">
+<MessageDeptDesk>FNTID</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737601">
+<MessageDescription>EXC0C:PRIVACY PROTECTION STATE **</MessageDescription>
+<MessageStartDate>2013-08-14</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737602">
+<MessageDeptDesk>EX 0C</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737603">
+<MessageDescription>EXC0C:PRIVACY PROTECTION STATE REQUIRED AT SUBMISSION **</MessageDescription>
+<MessageStartDate>2013-08-14</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737604">
+<MessageDeptDesk>EX 0C</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737605">
+<MessageDescription>MIS:RLOB ZAPPED UNDER PROJECT B-71593**</MessageDescription>
+<MessageStartDate>2014-08-01</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737606">
+<MessageDeptDesk>PV470</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737607">
+<MessageDescription>MIS:PENDING CLAIM**</MessageDescription>
+<MessageStartDate>2015-06-30</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737608">
+<MessageDeptDesk>I1750</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737609">
+<MessageDescription>LTCC:$1147.98(M),$1147.98(C) LIEN 05312015**</MessageDescription>
+<MessageStartDate>2015-09-04</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737610">
+<MessageDeptDesk>94LIG</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737611">
+<MessageDescription>LTCC:$5083.92(M),$6231.90(C) LIEN 06302015**</MessageDescription>
+<MessageStartDate>2015-09-04</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737612">
+<MessageDeptDesk>94LIG</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737613">
+<MessageDescription>LTCC:$5083.92(M),$11315.82(C) LIEN 07312015**</MessageDescription>
+<MessageStartDate>2015-09-04</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737614">
+<MessageDeptDesk>94LIG</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737615">
+<MessageDescription>LTCC:$5083.92 (M), $16399.74 (C), LIEN 8-31-2015**</MessageDescription>
+<MessageStartDate>2015-12-11</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737616">
+<MessageDeptDesk>94OAB</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737617">
+<MessageDescription>LTCC:$5083.92 (M), $21483.66 (C), LIEN 9-30-2015**</MessageDescription>
+<MessageStartDate>2015-12-11</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737618">
+<MessageDeptDesk>94OAB</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737619">
+<MessageDescription>LTCC:$5083.92 (M), $36735.45 (C) LIEN 12302015**</MessageDescription>
+<MessageStartDate>2016-03-01</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737620">
+<MessageDeptDesk>94OAB</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737621">
+<MessageDescription>LTCC:$5083.92 (M), $46903.26 (C) LIEN 02292016.**</MessageDescription>
+<MessageStartDate>2016-04-15</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737622">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737623">
+<MessageDescription>LTCC:$5083.92 (M), $41819.34 (C) LIEN 01302016**</MessageDescription>
+<MessageStartDate>2016-04-18</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737624">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737625">
+<MessageDescription>LTCC:$5083.92(M),$26567.58(C) LIEN 10312015**</MessageDescription>
+<MessageStartDate>2016-04-27</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737626">
+<MessageDeptDesk>94OAB</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737627">
+<MessageDescription>LTCC:$5083.92(M),$31651.50(C) LIEN 11312015**</MessageDescription>
+<MessageStartDate>2016-04-27</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737628">
+<MessageDeptDesk>94OAB</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737629">
+<MessageDescription>LTCC:$5083.92(M),$51987.18(C) LIEN 03312016**</MessageDescription>
+<MessageStartDate>2016-07-05</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737630">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737631">
+<MessageDescription>LTCC:$5083.92(M),$57071.10(C) LIEN 04302016**</MessageDescription>
+<MessageStartDate>2016-07-05</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737632">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737633">
+<MessageDescription>LTCC:$5083.92(M),$62155.02(C) LIEN 05312016**</MessageDescription>
+<MessageStartDate>2016-08-17</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737634">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737635">
+<MessageDescription>LTCC:$5083.92(M),$67238.94(C) LIEN 06302016**</MessageDescription>
+<MessageStartDate>2016-09-14</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737636">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737637">
+<MessageDescription>LTCC:$5083.92(M),$72,322.86(C) LIEN 07282016**</MessageDescription>
+<MessageStartDate>2016-09-14</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737638">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737639">
+<MessageDescription>LTCC:$5083.92(M),$77,406.78(C) LIEN 08302016**</MessageDescription>
+<MessageStartDate>2016-11-04</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737640">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737641">
+<MessageDescription>LTCC:$5083.92(M),$82,490.70(C) LIEN 09292016**</MessageDescription>
+<MessageStartDate>2016-11-04</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737642">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737643">
+<MessageDescription>LTCC:$5083.92(M),$87574.62(C) LIEN 10272016**</MessageDescription>
+<MessageStartDate>2016-12-15</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737644">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737645">
+<MessageDescription>LTCC:$5083.92(M),$92658.54(C) LIEN 11292016**</MessageDescription>
+<MessageStartDate>2017-02-01</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737646">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737647">
+<MessageDescription>LTCC:$5083.92(M),$97742.46(C) LIEN 12292016.**</MessageDescription>
+<MessageStartDate>2017-03-16</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737648">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737649">
+<MessageDescription>LTCC:$5083.92(M),$102826.38(C) LIEN 01312017.**</MessageDescription>
+<MessageStartDate>2017-04-17</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737650">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737651">
+<MessageDescription>LTCC:$5083.92(M),$107910.30(C) LIEN 02222017**</MessageDescription>
+<MessageStartDate>2017-07-10</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737652">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737653">
+<MessageDescription>LTCC:$5083.92(M),$112994.22(C) LIEN 03292017**</MessageDescription>
+<MessageStartDate>2017-07-10</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737654">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737655">
+<MessageDescription>LTCC:$5083.92(M),$118,078.14(C) LIEN 04262017**</MessageDescription>
+<MessageStartDate>2017-07-10</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737656">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737657">
+<MessageDescription>LTCC:$5083.92(M),$123162.06(C) LIEN 05/31/2017**</MessageDescription>
+<MessageStartDate>2017-08-10</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737658">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737659">
+<MessageDescription>LTCC:$5083.92(M),$128245.98(C) LIEN 06282017**</MessageDescription>
+<MessageStartDate>2017-09-13</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737660">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737661">
+<MessageDescription>LTCC:$5083.92(M),$133329.90(C) LIEN 07272017**</MessageDescription>
+<MessageStartDate>2017-09-13</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737662">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737663">
+<MessageDescription>LTCC:$5083.92(M),$138413.82(C) LIEN 08312017**</MessageDescription>
+<MessageStartDate>2017-10-26</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737664">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737665">
+<MessageDescription>LTCC:$5083.92(M),$143497.74(C) LIEN 09272017**</MessageDescription>
+<MessageStartDate>2017-11-13</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737666">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737667">
+<MessageDescription>LTCC:$5083.92(M),$153665.58(C) LIEN 11292017**</MessageDescription>
+<MessageStartDate>2018-01-11</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737668">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737669">
+<MessageDescription>LTCC:$45.00(M),$148581.66(C) LIEN 10252017**</MessageDescription>
+<MessageStartDate>2018-01-11</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737670">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737671">
+<MessageDescription>LTCC:$5083.92(M),$148536.66(C) LIEN 10252017**</MessageDescription>
+<MessageStartDate>2017-12-18</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737672">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737673">
+<MessageDescription>LTCC:$5083.92(M),$158749.50(C) LIEN 12262017**</MessageDescription>
+<MessageStartDate>2018-03-13</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737674">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737675">
+<MessageDescription>LTCC:$5083.92(M),$163833.42(C) LIEN 01312018**</MessageDescription>
+<MessageStartDate>2018-04-02</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737676">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737677">
+<MessageDescription>LTCC:$5083.92(M),$168,917.34(C) LIEN 02282018**</MessageDescription>
+<MessageStartDate>2018-05-17</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737678">
+<MessageDeptDesk>94KHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737679">
+<MessageDescription>LTCC:$2,295.96(M), $171,213.30(C) LIEN 03312018**</MessageDescription>
+<MessageStartDate>2018-08-02</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737680">
+<MessageDeptDesk>94CHE</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737681">
+<MessageDescription>CALTC:CODE 50117-CA UL - LTC ** 72</MessageDescription>
+<MessageStartDate>2020-04-27</MessageStartDate>
+<OLifEExtension ExtensionCode="SystemMessageExtension" VendorCode="37">
+<SystemMessageExtension id="SystemMessageExtension_5737682">
+<MessageDeptDesk>IN128674</MessageDeptDesk>
+</SystemMessageExtension>
+</OLifEExtension>
+</SystemMessage>
+<SystemMessage id="SystemMessage_5737683">
+<MessageDescription>TLIC:POLICY WAS PART OF TPLIC TO TLIC MERGER** </MessageDescription>
+<MessageStartDate>2020-10-12</MessageStartDate>
+</SystemMessage>
+<Fee id="Fee_5738077">
+<FeeType tc="22">Premium Load</FeeType>
+<OLifEExtension ExtensionCode="FeeExtension" VendorCode="37">
+<FeeExtension id="FeeExtension_5738078">
+<FeeThresholdAmt>0</FeeThresholdAmt>
+</FeeExtension>
+</OLifEExtension>
+</Fee>
+<OLifEExtension ExtensionCode="HoldingExtension" VendorCode="37">
+<HoldingExtension id="HoldingExtension_5738076">
+<LastMonthliversaryDate>2023-01-14</LastMonthliversaryDate>
+</HoldingExtension>
+</OLifEExtension>
+</Holding>
+<Party id="Party_5737547">
+<PartyTypeCode tc="1">Person</PartyTypeCode>
+<CarrierAdminSystem>DSS</CarrierAdminSystem>
+<FullName>KAUR, NAVREET</FullName>
+<Person/>
+<Producer>
+<CarrierAppointment id="CarrierAppointment_5737548">
+<CompanyProducerID>02LTR</CompanyProducerID>
+<CarrierCode>07-86231</CarrierCode>
+<CarrierApptTypeCode tc="4">Agency/General Agent</CarrierApptTypeCode>
+<DistributionAgreementInfo id="DistributionAgreementInfo_5737550">
+<DistributionAgreementInfoKey SystemCode="Cyberlife_9701" VendorCode="037">P01</DistributionAgreementInfoKey>
+</DistributionAgreementInfo>
+<DistributionChannelInfo id="DistributionChannelInfo_5737549">
+<DistributionChannelName>53</DistributionChannelName>
+</DistributionChannelInfo>
+</CarrierAppointment>
+</Producer>
+</Party>
+<Party id="Party_5737553">
+<Producer>
+<CarrierAppointment id="CarrierAppointment_5737554">
+<CompanyProducerID>108WF</CompanyProducerID>
+</CarrierAppointment>
+</Producer>
+</Party>
+<Party id="Party_5737557">
+<CarrierAdminSystem>DSS</CarrierAdminSystem>
+<Producer>
+<CarrierAppointment id="CarrierAppointment_5737558">
+<CompanyProducerID>33THF</CompanyProducerID>
+<CarrierCode>07-86231</CarrierCode>
+<CarrierApptTypeCode tc="4">Agency/General Agent</CarrierApptTypeCode>
+<DistributionAgreementInfo id="DistributionAgreementInfo_5737559">
+<DistributionAgreementInfoKey SystemCode="Cyberlife_9701" VendorCode="037">P01</DistributionAgreementInfoKey>
+</DistributionAgreementInfo>
+</CarrierAppointment>
+</Producer>
+</Party>
+<Party id="Party_5737561">
+<CarrierAdminSystem>DSS</CarrierAdminSystem>
+<Producer>
+<CarrierAppointment id="CarrierAppointment_5737562">
+<CompanyProducerID>108WF</CompanyProducerID>
+<CarrierCode>07-86231</CarrierCode>
+<CarrierApptTypeCode tc="4">Agency/General Agent</CarrierApptTypeCode>
+<DistributionAgreementInfo id="DistributionAgreementInfo_5737563">
+<DistributionAgreementInfoKey SystemCode="Cyberlife_9701" VendorCode="037">P01</DistributionAgreementInfoKey>
+</DistributionAgreementInfo>
+</CarrierAppointment>
+</Producer>
+</Party>
+<Party id="Party_5737684">
+<PartyTypeCode tc="1">Person</PartyTypeCode>
+<FullName>AVTAR S SAHOTA </FullName>
+<GovtID/>
+<ResidenceState tc="6">California</ResidenceState>
+<Person>
+<FirstName>AVTAR</FirstName>
+<MiddleName>S</MiddleName>
+<LastName>SAHOTA</LastName>
+<Gender tc="1">Male</Gender>
+<Age>0</Age>
+</Person>
+<Risk id="Risk_5737685"/>
+</Party>
+<Party id="Party_5737688">
+<PartyTypeCode tc="1">Person</PartyTypeCode>
+<FullName>SANDEEP K SAHOTA </FullName>
+<GovtID/>
+<ResidenceState tc="6">California</ResidenceState>
+<Person>
+<FirstName>SANDEEP</FirstName>
+<MiddleName>K</MiddleName>
+<LastName>SAHOTA</LastName>
+<Gender tc="1">Male</Gender>
+<Age>0</Age>
+</Person>
+<Risk id="Risk_5737689"/>
+</Party>
+<Party id="Party_5737692">
+<PartyTypeCode tc="1">Person</PartyTypeCode>
+<FullName>SATWANT S SAHOTA </FullName>
+<GovtID/>
+<ResidenceState tc="6">California</ResidenceState>
+<Person>
+<FirstName>SATWANT</FirstName>
+<MiddleName>S</MiddleName>
+<LastName>SAHOTA</LastName>
+<Gender tc="1">Male</Gender>
+<Age>0</Age>
+</Person>
+<Risk id="Risk_5737693"/>
+</Party>
+<Party id="Party_5737696">
+<PartyTypeCode tc="1">Person</PartyTypeCode>
+<FullName>JASWINDER K SAHOTA </FullName>
+<GovtID>560516778</GovtID>
+<ResidenceState tc="6">California</ResidenceState>
+<Person>
+<FirstName>JASWINDER</FirstName>
+<MiddleName>K</MiddleName>
+<LastName>SAHOTA</LastName>
+<Gender tc="2">Female</Gender>
+<BirthDate>1965-05-20</BirthDate>
+<Age>48</Age>
+<Height>170</Height>
+<Weight>79.37867</Weight>
+</Person>
+<Address id="Address_5737698">
+<Line1>1774 MORRISON BND</Line1>
+<City>YUBA CITY</City>
+<AddressState>CA</AddressState>
+<AddressStateTC tc="6">California</AddressStateTC>
+<Zip>95991-7310</Zip>
+<AddressCountry>USA</AddressCountry>
+<AddressCountryTC tc="1">United States of America</AddressCountryTC>
+</Address>
+<Phone id="Phone_5737699">
+<AreaCode>530</AreaCode>
+<DialNumber>6710833</DialNumber>
+</Phone>
+<Risk id="Risk_5737697"/>
+</Party>
+<Party id="Party_5737712">
+<PartyTypeCode tc="1">Person</PartyTypeCode>
+<FullName>PAID CLAIM LTC BENEFIT </FullName>
+<GovtID/>
+<ResidenceState tc="6">California</ResidenceState>
+<Person>
+<FirstName>PAID CLAIM</FirstName>
+<LastName>LTC BENEFIT</LastName>
+<Age>0</Age>
+</Person>
+</Party>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737547" id="Relation_5737551">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="37">Primary Writing Agent</RelationRoleCode>
+<InterestPercent>100</InterestPercent>
+<OLifEExtension ExtensionCode="RelationExtension" VendorCode="37">
+<RelationExtension id="RelationExtension_5737552">
+<PrimaryInd tc="1">True</PrimaryInd>
+</RelationExtension>
+</OLifEExtension>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737553" id="Relation_5737555">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="182">Writing Agency</RelationRoleCode>
+</Relation>
+<Relation OriginatingObjectID="Party_5737547" RelatedObjectID="Party_5737553" id="Relation_5737556">
+<OriginatingObjectType tc="6"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="182">Writing Agency</RelationRoleCode>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737557" id="Relation_5737560">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="38">Servicing Agent</RelationRoleCode>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737561" id="Relation_5737564">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="154">Servicing Agency</RelationRoleCode>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737684" id="Relation_5737686">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="34">Beneficiary</RelationRoleCode>
+<Sequence>1</Sequence>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737688" id="Relation_5737690">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="34">Beneficiary</RelationRoleCode>
+<Sequence>2</Sequence>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737692" id="Relation_5737694">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="34">Beneficiary</RelationRoleCode>
+<Sequence>3</Sequence>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737696" id="Relation_5737700">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="32">Insured</RelationRoleCode>
+<Sequence>1</Sequence>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737696" id="Relation_5737709">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="8">Owner</RelationRoleCode>
+<OLifEExtension ExtensionCode="RelationExtension" VendorCode="37">
+<RelationExtension id="RelationExtension_5737711">
+<PrimaryInd tc="1">True</PrimaryInd>
+</RelationExtension>
+</OLifEExtension>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737712" id="Relation_5737713">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="2147483647">Other</RelationRoleCode>
+<Sequence>49</Sequence>
+</Relation>
+<Relation OriginatingObjectID="Holding_5737545" RelatedObjectID="Party_5737696" id="Relation_5737714">
+<OriginatingObjectType tc="4"/>
+<RelatedObjectType tc="6"/>
+<RelationRoleCode tc="31">Payer</RelationRoleCode>
+<Sequence>1</Sequence>
+</Relation>
+</OLifE>
+</TXLifeResponse>
+</TXLife>
