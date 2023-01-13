@@ -4,81 +4,93 @@
 """
 
 # TODO
-# given cashflow name (column name) and discount column, calculate the present value
 # translate forward rate to discount factors
 # standardize column name for scenario number and projetion month
 import re
 import pandas as pd
-from utils.utils import AttributeDict, read_config, logger
-from typing import Dict, Any
+from utils.utils import AttributeDict, logger
+from typing import Dict, Any, Iterable
 from sqlalchemy import create_engine
 
+
 class CFDataHandler:
-    '''handles the data to feed into class CFs'''
+    """handles the data to feed into class CFs
+    Examples:
+        >>> config = read_config('/path/to/config.json')
+        >>> cf_raw_data = CFDataHandler(config).load_cfs()
+        >>> cfs = CFs(config, cf_raw_data)
+    """
+
     def __init__(self, config: AttributeDict):
         self.config = config
 
-    def load_cfs(self,) -> pd.DataFrame: 
-        '''main method to load cfs data'''
+    def load_cfs(
+        self,
+    ) -> pd.DataFrame:
+        """main method to load cfs data"""
         scenario_df = self._load_scenario_file()
         cashflow_df = self._load_cashflow_file()
 
         df = cashflow_df.join(scenario_df).reset_index()
 
-        return df 
+        return df
 
-    def _load_scenario_file(self,) -> pd.DataFrame :
-        '''load scenario file'''
+    def _load_scenario_file(
+        self,
+    ) -> pd.DataFrame:
+        """load scenario file"""
         scn_number = self.config.scenario_number_col
-        proj_mth = self.config.proj_mth_col
+        proj_mth = self.config.projection_month_col
         disc = self.config.discount_col
 
-        if self.config.source == 'sql':
-            server = self.config.server['inforce_server']
-            db = self.config.db['inforce_db']
+        if self.config.source == "sql":
+            server = self.config.inforce_server
+            db = self.config.inforce_db
             tbl = self.config.scenario_file
-            sql = f'SELECT [{scn_number}], [{proj_mth}], [{disc}]  FROM {tbl}'
-            connection_str = f'mssql+pyodbc://{server}:{db}'
+            sql = f"SELECT [{scn_number}], [{proj_mth}], [{disc}]  FROM {tbl}"
+            connection_str = f"mssql+pyodbc://{server}:{db}"
             conn = create_engine(connection_str)
 
             df = pd.read_sql_query(sql, conn)
-            # TODO: scenarios may miss t=0 values 
+            # TODO: scenarios may miss t=0 values
             df.set_index([scn_number, proj_mth], inplace=True)
-            
-        elif self.config.source == 'csv':
+
+        elif self.config.source == "csv":
             # TODO: depracated
             data_file = self.config.scenario_file
             df = pd.read_csv(data_file)
-            df = df.loc[:, [scn_number,proj_mth,disc]]
+            df = df.loc[:, [scn_number, proj_mth, disc]]
             df.set_index([scn_number, proj_mth], inplace=True)
         else:
             logger.error("Unsupported source for scenario file!")
             df = pd.DataFrame()
 
         return df
-    
-    def _load_cashflow_file(self, ) -> pd.DataFrame:
-        '''load cf projections'''
+
+    def _load_cashflow_file(
+        self,
+    ) -> pd.DataFrame:
+        """load cf projections"""
         scn_number = self.config.scenario_number_col
-        proj_mth = self.config.proj_mth_col
+        proj_mth = self.config.projection_month_col
         slice = self.config.slice
 
-        if self.config.source == 'sql':
-            server = self.config.server['results_server']
-            db = self.config.db['results_db']
+        if self.config.source == "sql":
+            server = self.config.results_server
+            db = self.config.results_db
             tbl = self.config.cashflow_file
-            sql = f'SELECT * FROM {tbl}'
+            sql = f"SELECT * FROM {tbl}"
             if slice:
-                sql += f' WHERE {self._create_slicing_condition(slice)}'
-            connection_str = f'mssql+pyodbc://{server}:{db}'
+                sql += f" WHERE {self._create_slicing_condition(slice)}"
+            connection_str = f"mssql+pyodbc://{server}:{db}"
             conn = create_engine(connection_str)
             df = pd.read_sql_query(sql, conn)
-            df.set_index([scn_number,proj_mth], inplace=True)
-            
-        elif self.config.source == 'csv':
+            df.set_index([scn_number, proj_mth], inplace=True)
+
+        elif self.config.source == "csv":
             data_file = self.config.cashflow_file
             df = pd.read_csv(data_file)
-            df.set_index([scn_number,proj_mth], inplace=True)
+            df.set_index([scn_number, proj_mth], inplace=True)
         else:
             logger.error("Unsupported source for scenario file!")
             df = pd.DataFrame()
@@ -87,7 +99,7 @@ class CFDataHandler:
 
     @staticmethod
     def _create_slicing_condition(slice: dict[str, Any]) -> str:
-        '''based on the slice dictionary, create a condition string
+        """based on the slice dictionary, create a condition string
         Args:
             slice: dictionary defining slicing conditions
         Returns:
@@ -96,21 +108,27 @@ class CFDataHandler:
             >>> slicing = {'name': 'Alex', 'age', 15}
             >>> _create_slicing_condition(slicing)
             >>> [name] = 'Alex' AND [age] = 15
-        '''
+        """
         conditions = []
         for key, val in slice.items():
             if type(val) == str:
                 val = f"'{val}'"
             conditions.append(f"[{key}] = {val}")
 
-        return ' AND '.join(conditions)
+        return " AND ".join(conditions)
 
 
 class CFs:
-    """stochastic cashflow class"""
+    """stochastic cashflow class
+    Examples:
+        >>> cfs = CFs(params, cf_raw_data)
+        >>> cfs.group_cfs(params.cfs_groupings.keys()) #Groups cashflows
+        >>> cfs.calc_ess_cfs() #calculate ess cashflows
+        >>> cfs.calc_bels(params.bel_definitions) #calculate BEls
+    """
 
     _COL_PROJ_MTH = "t"
-    _COL_DISCOUNT_FACTOR = "disc"
+    _COL_DISCOUNT_FACTOR = "discount_factor"
     _COL_SCENARIO_NUMBER = "scenario_no"
     _COL_ESS_WEIGHTS = "ess_weights"
     # number of stochastic scenarios
@@ -145,7 +163,7 @@ class CFs:
         """rename df columns"""
         # rename must-have columns
         standard_columns_rename = {
-            self.params.proj_mth_col: self._COL_PROJ_MTH,
+            self.params.projection_month_col: self._COL_PROJ_MTH,
             # "discount factor - risk free rate": "disc",
             self.params.discount_col: self._COL_DISCOUNT_FACTOR,
             self.params.scenario_number_col: self._COL_SCENARIO_NUMBER,
@@ -158,7 +176,7 @@ class CFs:
 
         return
 
-    def calc_equivalent_weights(
+    def _calc_equivalent_weights(
         self,
     ) -> None:
         """use discount factor as weights (by stochastic scenarios)"""
@@ -190,6 +208,8 @@ class CFs:
         This calculation will append the ESS scenario to self.df with scenario_no set to -1
         """
 
+        # calculate weights
+        self._calc_equivalent_weights()
         # temp column for the weighted cashflows
         suffix = "weighted_"
 
@@ -258,71 +278,71 @@ class CFs:
 
         return pd.DataFrame(data=results)
 
-
-    def group_cfs(self, groupings: list[str]) -> None:
-        '''group cashflows use the grouping defined in the params
+    def calc_grouped_cfs(self, groupings: Iterable[str]) -> None:
+        """group cashflows use the grouping defined in the params
         Args:
-            groupings (list): list of groupings to add to the dataframe 
+            groupings (list): list of groupings to add to the dataframe
         Returns:
             None: new columns are added to self.df. new columns are named as <grouping_def>.<group_name>
-        '''
+        """
         for grouping_def in groupings:
             # check if it is defined in params
             if grouping_def not in self.params.cfs_groupings:
-                logger.warn(f'{grouping_def} is not defined in params: Ignored')
+                logger.warn(f"{grouping_def} is not defined in params: Ignored")
                 continue
-            
-            for local_group_name, group_def in self.params.cfs_groupings[grouping_def].items():
-                global_group_name = f'{grouping_def}.{local_group_name}'
+
+            for local_group_name, group_def in self.params.cfs_groupings[
+                grouping_def
+            ].items():
+                global_group_name = f"{grouping_def}.{local_group_name}"
                 self._add_cfs_group(global_group_name, group_def)
 
         return
-    
+
     def _add_cfs_group(self, group_name: str, group_def: Dict[str, int]) -> None:
-        '''add an aggregate of cashflows to self.df
+        """add an aggregate of cashflows to self.df
         Args:
             group_name (str): the suffix added to the new cashflow group name
             group_def (dict): definition of the cashflow group. Key is cashflow name. Value is sign.
         Returns:
-            None: A new columns is added to self.df, named as group_name. 
-        '''
+            None: A new columns is added to self.df, named as group_name.
+        """
 
         self.df[group_name] = 0
 
         for cf, sign in group_def.items():
             self.df[group_name] += self.df[cf] * sign
 
-        # update grouped cfs 
+        # update grouped cfs
         self.grouped_cfs.append(group_name)
 
         return
 
-    def calc_bels(self, bel_definitions: list[str]) -> pd.DataFrame:
-        '''Calculate Bels in each scenario
+    def calc_bels(self, bel_definitions: Iterable[str]) -> pd.DataFrame:
+        """Calculate Bels in each scenario
         Args:
             bel_definitions (list): list of bel definitions
         Returns:
             pd.DataFrame: dataframe (index is scenario, column is bel defintions)
-        '''
+        """
         pvs = self._calc_pvs()
         for bel_def_name in bel_definitions:
-            # loop through all bel_defintions
+            # loop through all bel_definitions
             if bel_def_name not in self.params.bel_definitions:
                 # bel definition not in params, do nothing
                 logger.warn(f"{bel_def_name} is not defined in self.params")
                 continue
-            
+
             bel_def = self.params.bel_definitions[bel_def_name]
-            bel_colum =f"{bel_def_name}.bel" 
+            bel_colum = f"{bel_def_name}.bel"
             pvs[bel_colum] = 0
             for cf, sign in bel_def.items():
                 # loop through all cashflow components in current bel defintion
                 # TODO move this part to a separate function
-                cf_col = f'{bel_def_name}.{cf}'
+                cf_col = f"{bel_def_name}.{cf}"
                 pvs[bel_colum] += pvs[cf_col] * sign
 
-        return pvs 
-
+        return pvs
 
     @staticmethod
     def _standardize_column_name(raw_name: str) -> str:
@@ -355,15 +375,17 @@ class CFs:
         return new_name
 
 
-if __name__ == "__main__":
-    # test_string = "seg/separate Acct - Expenses(*)"
-    # print(test_string)
-    # print(standardize_column_names(test_string))
-    # test_string = r"(Main)/Row - Year 1 - Expenses + Commissions"
-    # print(test_string)
-    # print(standardize_column_names(test_string))
-
-    params = read_config("configs/cfs_config.json")
+def process_cfs(params: AttributeDict):
+    """main function for this app"""
+    # df = CFDataHandler(params).load_cfs()
     df = pd.DataFrame(data=pd.read_csv("temp/ifrs17_cfs.csv"))
     cfs = CFs(params, df)
-    print(cfs.df.columns)
+    cfs_groupings = ["fire_gmm"]
+    bel_definitions = ["fire_gmm", "kc4"]
+    # cfs_groupings = params.cfs_groupings.keys()
+    # bel_definitions = params.bel_definitions.keys()
+    cfs.calc_grouped_cfs(groupings=cfs_groupings)
+    cfs.calc_ess_cfs()
+    res = cfs.calc_bels(bel_definitions=bel_definitions)
+    print(res)
+    print(cfs.df)
