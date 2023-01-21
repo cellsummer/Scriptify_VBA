@@ -1,0 +1,28 @@
+Id,Name,Timestamp,RunTimestamp,LastRunTime
+1,00.00 Run Datalink All,7/12/2021 14:08,1/27/2022 19:08,0:03:40
+2,00.02 Set Valuation Date,8/9/2021 18:52,1/27/2022 19:04,0:00:01
+3,00.01 Remove Cells,4/8/2021 13:26,1/27/2022 19:04,0:00:10
+4,01.00 Load BAM / Populate Cells,11/15/2021 15:39,1/27/2022 19:06,0:01:44
+5,01.01 LAMs to MDFs,11/1/2021 16:40,1/27/2022 19:05,0:00:34
+6,01.02 BAM to DataLink,11/1/2021 16:51,1/27/2022 19:06,0:01:08
+8,02.00 Populate PIT,11/30/2021 22:28,1/27/2022 19:07,0:01:01
+9,02.01 Do Not Export,10/13/2021 13:35,1/27/2022 19:07,0:00:08
+10,03.00 Populate Current Fund Values,4/22/2021 13:32,1/27/2022 19:07,0:00:07
+14,13.00 Projection: Python Exe,10/7/2021 1:58,1/28/2022 13:27,0:00:34
+15,09.00 EXPORT DataLink,12/1/2022 12:32,12/1/2022 12:32,0:00:09
+16,04.00 Scenario Imports,4/22/2021 15:29,,
+18,04.01 Current Scenario Table Import,4/22/2021 15:28,,
+20,12.00 Scenario Export,4/22/2021 15:45,1/28/2022 13:27,0:00:08
+21,12.01 Current Scenario Selection,6/8/2021 0:39,1/28/2022 13:26,0:00:02
+22,12.02 Export Current Scenario,4/26/2021 19:59,1/28/2022 13:27,0:00:06
+23,10.00 RUN ALL,12/20/2021 16:56,1/28/2022 13:28,3:37:06
+24,04.02 Current Scenario Table Import,6/3/2021 9:03,,
+25,Issue Day Override,8/10/2021 0:19,,
+26,11.03 Projection: Export VLI SAT Report,1/25/2022 10:53,1/28/2022 11:00,0:00:49
+27,11.01 Projection: VLI SAT to MDF (IFRS4 Groups),11/9/2021 13:49,1/28/2022 10:24,0:33:23
+28,11.02 Projection: VLI SAT to MDF (PlanCode Groups),10/28/2021 3:11,1/28/2022 10:59,0:35:09
+29,13.00 Projection: Python Exe KC4,10/7/2021 2:32,1/28/2022 13:28,0:00:23
+32,11.05.00 Run C File Query,1/25/2022 10:53,1/28/2022 13:26,0:00:33
+33,11.05.01 Run Static Validation Queries,9/1/2021 15:14,1/28/2022 13:26,0:00:09
+34,11.04 Valuation: VLI Reserves,11/9/2021 12:09,1/28/2022 13:26,2:25:53
+35,Increasing Face Seriatim Override,12/17/2021 12:32,,
