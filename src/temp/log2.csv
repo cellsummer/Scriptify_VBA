@@ -1,4 +1,4 @@
-Id,Type,Code,Description,Details,Object,ObjectId,Timestamp,Module,Dataset,Run Id,Machine,Instance,Memory Workset,Memory Peak,Heap CY Results,Heap Block Results,Batch Id
+Id,Type,No,Description,Details,Object,ObjectId,Timestamp,Module,Dataset,Run Id,Machine,Instance,Memory Workset,Memory Peak,Heap CY Results,Heap Block Results,BatchId
 1,Info,8169,Batch Started,Run time: 00:00:00 [352] [00.00 EXECUTION DSF: All DataLink Steps] type: Dataset Formula,Batch,352,1/21/23 3:03,N/A,equity_cons_valuation_v24_27653,727984898,AZTPM034,-1,39236,123256,0,0,352
 2,Info,8169,Batch Started,Run time: 00:00:00 [101] [00.01 SETUP DSF: Set Valuation Date] type: Dataset Formula,Batch,101,1/21/23 3:03,N/A,equity_cons_valuation_v24_27653,727984898,AZTPM034,-1,44956,123256,0,0,101
 3,Info,7473,Batch Completed,Run time: 00:00:00 [101] [00.01 SETUP DSF: Set Valuation Date] type: Dataset Formula,Batch,101,1/21/23 3:03,N/A,equity_cons_valuation_v24_27653,727984898,AZTPM034,-1,46276,123256,0,0,101
