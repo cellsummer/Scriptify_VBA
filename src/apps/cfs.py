@@ -42,6 +42,7 @@ class CFDataHandler:
         scn_number = self.config.scenario_number_col
         proj_mth = self.config.projection_month_col
         disc = self.config.discount_col
+        df = pd.DataFrame()
 
         if self.config.source == "sql":
             server = self.config.inforce_server
@@ -53,17 +54,16 @@ class CFDataHandler:
 
             df = pd.read_sql_query(sql, conn)
             # TODO: scenarios may miss t=0 values
-            df.set_index([scn_number, proj_mth], inplace=True)
+            df = df.set_index([scn_number, proj_mth], inplace=False)
 
         elif self.config.source == "csv":
             # TODO: depracated
             data_file = self.config.scenario_file
-            df = pd.read_csv(data_file)
-            df = df.loc[:, [scn_number, proj_mth, disc]]
-            df.set_index([scn_number, proj_mth], inplace=True)
+            df = df.concat(df, pd.read_csv(data_file))
+            df = df[[scn_number, proj_mth, disc]].copy()
+            df = df.set_index([scn_number, proj_mth], inplace=False)
         else:
             logger.error("Unsupported source for scenario file!")
-            df = pd.DataFrame()
 
         return df
 
@@ -74,6 +74,7 @@ class CFDataHandler:
         scn_number = self.config.scenario_number_col
         proj_mth = self.config.projection_month_col
         slice = self.config.slice
+        df = pd.DataFrame()
 
         if self.config.source == "sql":
             server = self.config.results_server
@@ -85,12 +86,12 @@ class CFDataHandler:
             connection_str = f"mssql+pyodbc://{server}:{db}"
             conn = create_engine(connection_str)
             df = pd.read_sql_query(sql, conn)
-            df.set_index([scn_number, proj_mth], inplace=True)
+            df = df.set_index([scn_number, proj_mth])
 
         elif self.config.source == "csv":
             data_file = self.config.cashflow_file
-            df = pd.read_csv(data_file)
-            df.set_index([scn_number, proj_mth], inplace=True)
+            df = df.concat(pd.read_csv(data_file, index_col=False))
+            df = df.set_index([scn_number, proj_mth])
         else:
             logger.error("Unsupported source for scenario file!")
             df = pd.DataFrame()
@@ -378,7 +379,7 @@ class CFs:
 def process_cfs(params: AttributeDict):
     """main function for this app"""
     # df = CFDataHandler(params).load_cfs()
-    df = pd.DataFrame(data=pd.read_csv("temp/ifrs17_cfs.csv"))
+    df = pd.DataFrame(data=pd.read_csv("inputs/ifrs17_cfs.csv"))
     cfs = CFs(params, df)
     cfs_groupings = ["fire_gmm"]
     bel_definitions = ["fire_gmm", "kc4"]

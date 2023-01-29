@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 """visualize batch run times"""
 import pandas as pd
-import datetime
 import json
 
 
@@ -33,9 +32,9 @@ class BatchProfile:
         self,
     ):
         """load logs"""
-        self.log = pd.read_csv("temp/log2.csv")
-        self.batch = pd.read_csv("temp/batch2.csv")
-        self.dlmacro = pd.read_csv("temp/dlmacro2.csv")
+        self.log = pd.read_csv("inputs/log2.csv")
+        self.batch = pd.read_csv("inputs/batch2.csv")
+        self.dlmacro = pd.read_csv("inputs/dlmacro2.csv")
 
         # clean the data
         # convert timestamps
@@ -63,16 +62,16 @@ class BatchProfile:
     ):
         """get a list of events(batch + datalink step)"""
         # get a list of running batches from log
-        filt = self.log["No"] == self._start_code
-        batch_ids = self.log.loc[filt, "BatchId"]
-        filt = self.batch["Id"].isin(batch_ids)
-        batches = self.batch.loc[filt, ["Id", "Name"]]
+        start_code = self._start_code
+        batch_ids = self.log.query("No==@start_code").BatchId
+        batches = self.batch.query("Id in @batch_ids")[["Id", "Name"]]
 
         # add start time
-        filt = self.log["No"] == self._start_code
         batches["BatchId"] = batches["Id"]
         batches = batches.merge(
-            self.log.loc[filt, ["BatchId", "Timestamp"]], on="BatchId", how="left"
+            self.log.query("No==@start_code")[["BatchId", "Timestamp"]],
+            on="BatchId",
+            how="left",
         )
 
         # get a list of dlmacros
@@ -82,20 +81,16 @@ class BatchProfile:
         )
 
         # get a list of dl steps
-        filt = (self.dlmacro["Id"].isin(batches["Id"])) & (self.dlmacro["Act"] != 3)
-        dls = self.dlmacro.loc[
-            filt, ["Id", "Reference", "Act", "ArgumentNameTmp", "Time"]
+        ids = batches.Id
+        dls = self.dlmacro.query("Id in @ids and Act != 3")[
+            ["Id", "Reference", "Act", "ArgumentNameTmp", "Time"]
         ]
         dls["Action"] = dls["Act"].map(self._macro_action_map)
         dls["Name"] = dls["Action"] + ": " + dls["ArgumentNameTmp"]
-
         dls.sort_values(by=["Id", "Reference"], inplace=True)
 
-        # print(type((self.log["Timestamp"][0])))
         print(batches)
-        # print(type(batches["Timestamp"][0]))
         print(dls)
-        # print(batches)
 
         return batches, dls
 
@@ -108,6 +103,8 @@ class BatchProfile:
         event_name = []
         event_start = []
         event_finish = []
+        start_code = self._start_code
+        finish_code = self._finish_code
 
         for _, row in batches.iterrows():
             # batch id is the same as event id
@@ -117,12 +114,14 @@ class BatchProfile:
 
             id = row["Id"]
 
-            filt = (self.log["BatchId"] == id) & (self.log["No"] == self._start_code)
-            start_time = self.log.loc[filt, "Timestamp"].values[0]
+            start_time = self.log.query(
+                "BatchId == @id and No == @start_code"
+            ).Timestamp.iloc[0]
             event_start.append(start_time)
 
-            filt = (self.log["BatchId"] == id) & (self.log["No"] == self._finish_code)
-            finish_time = self.log.loc[filt, "Timestamp"].values[0]
+            finish_time = self.log.query(
+                "BatchId == @id and No == @finish_code"
+            ).Timestamp.iloc[0]
             event_finish.append(finish_time)
 
         curr_batch_id = 0
@@ -138,20 +137,18 @@ class BatchProfile:
                 if row["Id"] != curr_batch_id:
                     time_taken = pd.Timedelta(0)
                     # if curr_batch_id > 0:
-                        # if this is the last step in the macro
-                        #   make the finish time to be the same as batch_finish_time
-                        # event_finish[-1] = batch_finish_time
+                    # if this is the last step in the macro
+                    #   make the finish time to be the same as batch_finish_time
+                    # event_finish[-1] = batch_finish_time
 
                 id = row["Id"]
-                filt = (self.log["BatchId"] == id) & (
-                    self.log["No"] == self._start_code
-                )
-                batch_start_time = self.log.loc[filt, "Timestamp"].values[0]
+                batch_start_time = self.log.query(
+                    "BatchId == @id and No == @start_code"
+                ).Timestamp.iloc[0]
 
-                filt = (self.log["BatchId"] == id) & (
-                    self.log["No"] == self._finish_code
-                )
-                batch_finish_time = self.log.loc[filt, "Timestamp"].values[0]
+                batch_finish_time = self.log.query(
+                    "BatchId == @id and No == @finish_code"
+                ).Timestamp.iloc[0]
 
                 start_time = min(
                     batch_start_time + time_taken,
@@ -173,9 +170,10 @@ class BatchProfile:
         }
 
         df_res = pd.DataFrame(data=res)
-        df_res["event_name"].fillna("Unknown", inplace=True)
+        df_res['event_name'] = df_res["event_name"].fillna("Unknown")
         df_res["duration"] = df_res["event_finish"] - df_res["event_start"]
-        df_res.sort_values(by=["event_start"], inplace=True)
+        df_res["duration_in_seconds"] = df_res["duration"].total_seconds()
+        df_res = df_res.sort_values(by=["event_start"])
         print(df_res)
 
         return df_res
@@ -189,7 +187,7 @@ class BatchProfile:
             ts = int(
                 (row["event_start"] - batch_start_time).total_seconds() / self._units
             )
-            dur = int(row["duration"].total_seconds() / self._units)
+            dur = int(row["duration_in_seconds"] / self._units)
             dur = 1 if dur == 0 else dur
             profile_row = {
                 "pid": pid,
@@ -202,7 +200,7 @@ class BatchProfile:
             json_profile.append(profile_row)
 
         # print(json_profile)
-        with open("temp/profile.json", "w") as f:
+        with open("inputs/profile.json", "w") as f:
             json.dump(json_profile, f)
 
     def visualize_profile(
