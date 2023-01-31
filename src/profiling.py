@@ -20,7 +20,8 @@ class BatchProfile:
         9: "Build risk classes",
         10: "Remove cells",
     }
-    _units = 1
+    _units = 0.000001
+    # _units = 1
 
     def __init__(
         self,
@@ -127,40 +128,39 @@ class BatchProfile:
         curr_batch_id = 0
         time_taken = pd.Timedelta(0)
 
-        add_substeps = True
-        if add_substeps:
-            for _, row in dls.iterrows():
-                batch_id.append(row["Id"])
-                event_id.append(row["Id"] + row["Reference"] / 100)
-                event_name.append(row["Name"])
+        for _, row in dls.iterrows():
+            batch_id.append(row["Id"])
+            event_id.append(row["Id"] + row["Reference"] / 100)
+            event_name.append(row["Name"])
 
-                if row["Id"] != curr_batch_id:
-                    time_taken = pd.Timedelta(0)
-                    # if curr_batch_id > 0:
-                    # if this is the last step in the macro
-                    #   make the finish time to be the same as batch_finish_time
-                    # event_finish[-1] = batch_finish_time
+            if row["Id"] != curr_batch_id:
+                time_taken = pd.Timedelta(0)
 
-                id = row["Id"]
-                batch_start_time = self.log.query(
-                    "BatchId == @id and No == @start_code"
-                ).Timestamp.iloc[0]
+            id = row["Id"]
+            batch_start_time = self.log.query(
+                "BatchId == @id and No == @start_code"
+            ).Timestamp.iloc[0]
 
-                batch_finish_time = self.log.query(
-                    "BatchId == @id and No == @finish_code"
-                ).Timestamp.iloc[0]
+            batch_finish_time = self.log.query(
+                "BatchId == @id and No == @finish_code"
+            ).Timestamp.iloc[0]
 
-                start_time = min(
-                    batch_start_time + time_taken,
-                    batch_finish_time - pd.Timedelta(1, unit="s"),
-                )
-                finish_time = min(start_time + row["Time"], batch_finish_time)
+            start_time = min(
+                batch_start_time + time_taken,
+                batch_finish_time - pd.Timedelta(1, unit="s"),
+            )
 
-                time_taken += row["Time"]
-                curr_batch_id = row["Id"]
+            # TODO: this is a workaround
+            min_dur = 2
+            event_dur = pd.Timedelta(0) if row["Time"] < pd.Timedelta(min_dur, unit='s') else row["Time"]
 
-                event_start.append(start_time)
-                event_finish.append(finish_time)
+            finish_time = min(start_time + event_dur, batch_finish_time)
+
+            time_taken += event_dur
+            curr_batch_id = row["Id"]
+
+            event_start.append(start_time)
+            event_finish.append(finish_time)
 
         res = {
             "event_id": event_id,
@@ -172,8 +172,9 @@ class BatchProfile:
         df_res = pd.DataFrame(data=res)
         df_res['event_name'] = df_res["event_name"].fillna("Unknown")
         df_res["duration"] = df_res["event_finish"] - df_res["event_start"]
-        df_res["duration_in_seconds"] = df_res["duration"].total_seconds()
+        df_res["duration_in_seconds"] = df_res["duration"].dt.total_seconds()
         df_res = df_res.sort_values(by=["event_start"])
+        df_res.to_csv('outputs/events.csv')
         print(df_res)
 
         return df_res
@@ -200,13 +201,8 @@ class BatchProfile:
             json_profile.append(profile_row)
 
         # print(json_profile)
-        with open("inputs/profile.json", "w") as f:
+        with open("outputs/profile.json", "w") as f:
             json.dump(json_profile, f)
-
-    def visualize_profile(
-        self,
-    ):
-        pass
 
 
 def batch_profiling():
