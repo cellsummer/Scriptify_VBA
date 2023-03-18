@@ -8,7 +8,7 @@ from pathlib import Path
 
 # from openpyxl.utils.dataframe import dataframe_to_rows
 # import openpyxl
-import pandas as pd
+# import pandas as pd
 import shutil
 import logging
 
@@ -66,75 +66,55 @@ def read_config(config_file: str, fields: list = []) -> AttributeDict:
     return AttributeDict(config_filtered)
 
 
-def write_df_to_excel(
-    df: pd.DataFrame,
-    excel_file: str,
-    excel_tab: str,
-    startrow: int = 0,
-    startcol: int = 0,
-) -> None:
-    """write dataframe to excel
-    If excel file/tab does not exist: create a new excel file/tab
-    Otherwise, overwrite to the existing tab
+# def write_df_to_excel(
+#     df: pd.DataFrame,
+#     excel_file: str,
+#     excel_tab: str,
+#     startrow: int = 0,
+#     startcol: int = 0,
+# ) -> None:
+#     """write dataframe to excel
+#     If excel file/tab does not exist: create a new excel file/tab
+#     Otherwise, overwrite to the existing tab
 
-    Args:
-        df (DataFrame): data to write
-        excel_file (str): excel file path
-        excel_tab (str): tab to write to
-        startrow (int): starting row (0-based)
-        startcol (int): starting row (0-based)
+#     Args:
+#         df (DataFrame): data to write
+#         excel_file (str): excel file path
+#         excel_tab (str): tab to write to
+#         startrow (int): starting row (0-based)
+#         startcol (int): starting row (0-based)
 
-    Returns:
-        None
+#     Returns:
+#         None
 
-    Examples:
-        >>> write_df_to_excel(df, "otuput.xlsx", "summary_tab")
-    """
-    if exists(excel_file):
-        # if excel file already exists, make a bak copy
-        file_ext = Path(excel_file).suffix
-        file_base_name = Path(excel_file).stem
-        file_directory = Path(excel_file).parent
-        bak_file = Path(file_directory) / f"{file_base_name}_bak{file_ext}"
-        shutil.copy(excel_file, bak_file)
-        mode = "a"
-        if_sheet_exists = "overlay"
-    else:
-        mode = "w"
-        if_sheet_exists = None
+#     Examples:
+#         >>> write_df_to_excel(df, "otuput.xlsx", "summary_tab")
+#     """
+#     if exists(excel_file):
+#         # if excel file already exists, make a bak copy
+#         file_ext = Path(excel_file).suffix
+#         file_base_name = Path(excel_file).stem
+#         file_directory = Path(excel_file).parent
+#         bak_file = Path(file_directory) / f"{file_base_name}_bak{file_ext}"
+#         shutil.copy(excel_file, bak_file)
+#         mode = "a"
+#         if_sheet_exists = "overlay"
+#     else:
+#         mode = "w"
+#         if_sheet_exists = None
 
-    with pd.ExcelWriter(  # pylint: disable=abstract-class-instantiated
-        excel_file, mode=mode, if_sheet_exists=if_sheet_exists
-    ) as xl_writer:
+#     with pd.ExcelWriter(  # pylint: disable=abstract-class-instantiated
+#         excel_file, mode=mode, if_sheet_exists=if_sheet_exists
+#     ) as xl_writer:
 
-        df.to_excel(
-            xl_writer,
-            engine="openpyxl",
-            sheet_name=excel_tab,
-            header=True,
-            index=False,
-            startcol=startcol,
-            startrow=startrow,
-        )
+#         df.to_excel(
+#             xl_writer,
+#             engine="openpyxl",
+#             sheet_name=excel_tab,
+#             header=True,
+#             index=False,
+#             startcol=startcol,
+#             startrow=startrow,
+#         )
 
-    logger.info("DataFrame has been written to %s - %s", excel_file, excel_tab)
-
-
-def playaround():
-    fields = ["server", "db", "table"]
-
-    config = read_config("configs/my_config.json", fields)
-    # config = read_config("configs/my_config.json", )
-    sample_df = pd.DataFrame(data={"fields": fields})
-    xl_file = "temp/out1.xlsx"
-
-    write_df_to_excel(sample_df, xl_file, "reserves", startrow=4)
-
-    logger.info(config)
-    print(config.server)
-    print(config.db)
-    print(config["table"])
-
-
-if __name__ == "__main__":
-    playaround()
+#     logger.info("DataFrame has been written to %s - %s", excel_file, excel_tab)

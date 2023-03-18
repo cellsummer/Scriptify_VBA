@@ -8,6 +8,7 @@ from utils.utils import logger, read_config
 # import pandas as pd
 from typing import Any
 from apps.cfs import process_cfs
+from apps.slice_n_dice import slice_n_dice 
 
 
 def run_programs(program_name: str, config_file: Any = None) -> None:
@@ -21,6 +22,11 @@ def run_programs(program_name: str, config_file: Any = None) -> None:
         params = read_config(config_file)
         process_cfs(params)
         logger.info("Finished running cfs.")
+    if program_name == "slice_n_dice":
+        logger.info("Start running slice & dice ...")
+        params = read_config(config_file)
+        slice_n_dice(params)
+        logger.info("Finished running slice & dice.")
     else:
         logger.error(f"Incorrect command: {program_name} !")
 
@@ -138,7 +144,9 @@ def run_programs(program_name: str, config_file: Any = None) -> None:
 #     data_handle = CFDataHandler(cf_config)
 #     print(data_handle._create_slicing_condition(cf_config.slice))
 
-# if __name__ == "__main__":
-#     logger.error("Please run thorugh main.py or main-gui.py")
-#     # test_fmt_mapping()
-#     # test_io()
+if __name__ == "__main__":
+    prog_to_run = "slice_n_dice" 
+    config = "configs/slice_n_dice_config.json"
+    run_programs(prog_to_run,config)
+    # test_fmt_mapping()
+    # test_io()

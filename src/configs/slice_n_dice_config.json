@@ -1,0 +1,31 @@
+{
+  "results_server": "myserver",
+  "results_db": "axis_results_equity",
+  "cfile_name": "vli_stat_cfile_202206",
+  "static_inputs": "/path/to/static_inputs/",
+  "queries": [
+    {
+      "output_path": "/path/to/output_1.csv",
+      "slice": [
+        "legal_entity"
+      ],
+      "dice": [
+        "base_reserve",
+        "def_reserve",
+        "gmdb"
+      ]
+    },
+    {
+      "output_path": "/path/to/output_2.csv",
+      "slice": [
+        "legal_entity",
+        "stat_code"
+      ],
+      "dice": [
+        "separate_account_reserve",
+        "general_account_reserve",
+        "gmdb"
+      ]
+    }
+  ]
+}
