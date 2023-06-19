@@ -3,15 +3,15 @@ WITH pre_pv_factors AS (
 		scn,
 		t,
 		discount_rate,
-		COALESCE(t - LAG(t, 1) OVER (PARTITION BY scn ORDER BY scn),0) AS delta_t,
+		COALESCE(t - LAG(t, 1) OVER (PARTITION BY scn ORDER BY t),0) AS delta_t,
 		power(1 + discount_rate, -1.0/12) AS single_month_pv_rate,
 		power(
 			1 + discount_rate,
-			- 1.0/12 * COALESCE(t - LAG(t, 1) OVER (PARTITION BY scn ORDER BY scn), 0)
+			- 1.0/12 * COALESCE(t - LAG(t, 1) OVER (PARTITION BY scn ORDER BY t), 0)
 		) 	AS single_period_pv_rate,
 		power(
 			1 + discount_rate,
-			- 1.0/24 * COALESCE(t - LAG(t, 1) OVER (PARTITION BY scn ORDER BY scn), 0)
+			- 1.0/24 * COALESCE(t - LAG(t, 1) OVER (PARTITION BY scn ORDER BY t), 0)
 		) 	AS half_period_pv_rate
 	FROM cfs
 )
