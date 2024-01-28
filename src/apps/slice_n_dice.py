@@ -13,6 +13,52 @@
 
 # Config: slice_n_dice_config.json
 from utils.utils import AttributeDict
+from msgspec import json, Struct
+from pathlib import Path
+
+
+class SliceQry(Struct):
+    output_path: str
+    slice: list[str]
+    dice: list[str]
+
+
+class SliceCfg(Struct):
+    results_server: str
+    results_db: str
+    cfile_name: str
+    static_inputs: str
+    queries: list[SliceQry]
+
+
+SLICE_QUERY = b"""
+SELECT {slice_fields}, {dice_expressions} 
+FROM [{db}].dbo.[{tbl}]
+WHERE {filter}
+GROUP BY {slice_fields}
+"""
+
+
+def get_cfg(config_file: str) -> SliceCfg:
+    with open(config_file, "r") as f:
+        return json.decode(f.read(), type=SliceCfg)
+
+
+def slice_query(cfg: SliceCfg, n: int) -> str:
+    slice_fields_qry = ", ".join(cfg.queries[n].slice)
+    dice_expressions = ["SUM([" + field + "])" for field in cfg.queries[n].dice]
+    dice_expressions_qry = ", ".join(dice_expressions)
+    db = cfg.results_db
+    tbl = cfg.cfile_name
+    filter = "1 = 1"
+
+    return SLICE_QUERY.decode().format(
+        slice_fields=slice_fields_qry,
+        dice_expressions=dice_expressions_qry,
+        db=db,
+        tbl=tbl,
+        filter=filter,
+    )
 
 
 class Slicer:
@@ -71,3 +117,12 @@ def slice_n_dice(config: AttributeDict):
     # set pyodbc connection
     # construct sql
     # read raw data into a lightweight data structure
+
+
+def main():
+    cfg = get_cfg("configs/slice_n_dice_config.json")
+    print(slice_query(cfg, 0))
+
+
+if __name__ == "main":
+    main()

@@ -11,6 +11,27 @@ Author: AXIS Model Development
 :setvar tableid  202206_test_reporting
 :setvar RESULTSDB AXIS_RESULTS_EQUITY
 
+-- CTE: create stat_code mapping tables
+delcare @mortality_basis_mapping table
+(
+  plan_code varchar(3), 
+  moses_plan_code varchar(3),
+  med_flag varchar(5),
+  era varchar(1),
+  lapse_status varchar(40),
+  mortality_basis varchar(10)
+) ;
+INSERT INTO @mortality_basis_mapping  
+VALUES 
+  ('MSA', 'PRM5', 'P', '_', 'regular', 'CET80'),
+  ('P6S', 'PRM6', 'P', '0', 'regular', 'CET80'),
+  ('P6J', 'PRM6', 'P', '0', 'regular', 'CET80'),
+  ('P7S', 'PRM6', 'P', '0', 'regular', 'CET80'),
+  ('P7J', 'PRM6', 'P', '0', 'regular', 'CET80'),
+  ('P8S', 'PRM6', 'P', '0', 'regular', 'CET80'),
+  ('P8J', 'PRM6', 'P', '0', 'regular', 'CET80'),
+
+
 CREATE FUNCTION map_stat_code(
 	@plan_code varchar(10),
 	@moses_plan_code varchar(10),

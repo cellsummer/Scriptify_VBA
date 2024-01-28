@@ -41,7 +41,7 @@ class FMT:
             raise Exception(msg)
             return
 
-        if any(col not in df.columns for col in columns):
+        if any([col not in df.columns for col in columns]):
             msg = "Some of the tags don't exist in the columns of dataframe."
             raise Exception(msg)
             return

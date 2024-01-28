@@ -152,7 +152,11 @@ class BatchProfile:
 
             # TODO: this is a workaround
             min_dur = 2
-            event_dur = pd.Timedelta(0) if row["Time"] < pd.Timedelta(min_dur, unit='s') else row["Time"]
+            event_dur = (
+                pd.Timedelta(0)
+                if row["Time"] < pd.Timedelta(min_dur, unit="s")
+                else row["Time"]
+            )
 
             finish_time = min(start_time + event_dur, batch_finish_time)
 
@@ -170,11 +174,11 @@ class BatchProfile:
         }
 
         df_res = pd.DataFrame(data=res)
-        df_res['event_name'] = df_res["event_name"].fillna("Unknown")
+        df_res["event_name"] = df_res["event_name"].fillna("Unknown")
         df_res["duration"] = df_res["event_finish"] - df_res["event_start"]
         df_res["duration_in_seconds"] = df_res["duration"].dt.total_seconds()
         df_res = df_res.sort_values(by=["event_start"])
-        df_res.to_csv('outputs/events.csv')
+        df_res.to_csv("outputs/events.csv")
         print(df_res)
 
         return df_res
@@ -184,7 +188,6 @@ class BatchProfile:
         json_profile = []
         batch_start_time = df["event_start"].iloc[0]
         for _, row in df.iterrows():
-
             ts = int(
                 (row["event_start"] - batch_start_time).total_seconds() / self._units
             )
