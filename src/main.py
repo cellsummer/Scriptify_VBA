@@ -30,7 +30,6 @@ def construct_parser():
 
     return args
 
-
 # @Gooey(program_name='sample program')
 def main_gui():
     args = construct_parser()
