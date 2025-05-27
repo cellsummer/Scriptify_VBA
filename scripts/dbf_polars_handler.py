@@ -24,9 +24,7 @@ class DBFFieldDescriptor:
     """Represents a DBF field descriptor."""
 
     def __init__(self, name: str, field_type: str, length: int, decimal_count: int = 0):
-        self.name = name[:10].ljust(
-            11, "\x00"
-        )  # Field name (11 bytes, null-terminated)
+        self.name = name[:10].ljust(11, '\x00')  # Field name (11 bytes, null-terminated)
         self.field_type = field_type.upper()
         self.length = length
         self.decimal_count = decimal_count
@@ -34,18 +32,18 @@ class DBFFieldDescriptor:
     def to_bytes(self) -> bytes:
         """Convert field descriptor to bytes."""
         return struct.pack(
-            "<11sBBBB15sB",
-            self.name.encode("ascii"),
+            '<11sBBBB15sB',
+            self.name.encode('ascii'),
             ord(self.field_type),
             self.length,
             self.decimal_count,
             0,  # Reserved
-            b"\x00" * 15,  # Reserved
-            0,  # Work area ID
+            b'\x00' * 15,  # Reserved
+            0  # Work area ID
         )
 
     @classmethod
-    def from_bytes(cls, data: bytes) -> "DBFFieldDescriptor":
+    def from_bytes(cls, data: bytes) -> 'DBFFieldDescriptor':
         """Create field descriptor from bytes."""
         if len(data) < 32:
             raise ValueError(f"Field descriptor requires 32 bytes, got {len(data)}")
@@ -58,7 +56,7 @@ class DBFFieldDescriptor:
         # 17: Decimal count (1 byte)
         # 18-31: Reserved (14 bytes)
 
-        name = data[0:11].rstrip(b"\x00").decode("ascii")
+        name = data[0:11].rstrip(b'\x00').decode('ascii')
         field_type = chr(data[11])
         # Skip bytes 12-15 (field data address)
         length = data[16]
@@ -78,7 +76,7 @@ class DBFReader:
 
     def read(self) -> pl.DataFrame:
         """Read DBF file and return Polars DataFrame."""
-        with open(self.file_path, "rb") as f:
+        with open(self.file_path, 'rb') as f:
             # Read header
             self._read_header(f)
 
@@ -94,62 +92,97 @@ class DBFReader:
         """Read DBF header (32 bytes)."""
         header_data = f.read(32)
         if len(header_data) < 32:
-            raise ValueError("Invalid DBF file: header too short")
+            raise ValueError(f"Invalid DBF file: header too short ({len(header_data)} bytes)")
 
-        self.header = struct.unpack("<BBBBLHHHHHHHHHHH", header_data)
+        try:
+            # DBF header structure (32 bytes):
+            # 0: Version number
+            # 1-3: Date of last update (YY MM DD)
+            # 4-7: Number of records (4 bytes, little-endian)
+            # 8-9: Header length (2 bytes, little-endian)
+            # 10-11: Record length (2 bytes, little-endian)
+            # 12-31: Reserved
 
-        # Extract key information
-        self.version = self.header[0]
-        self.last_update = datetime.date(
-            1900 + self.header[1],  # Year
-            self.header[2],  # Month
-            self.header[3],  # Day
-        )
-        self.num_records = self.header[4]
-        self.header_length = self.header[5]
-        self.record_length = self.header[6]
+            self.version = header_data[0]
+            self.last_update = datetime.date(
+                1900 + header_data[1],  # Year
+                header_data[2],         # Month
+                header_data[3]          # Day
+            )
+            self.num_records = struct.unpack('<L', header_data[4:8])[0]
+            self.header_length = struct.unpack('<H', header_data[8:10])[0]
+            self.record_length = struct.unpack('<H', header_data[10:12])[0]
+
+            print(f"DBF Header Info:")
+            print(f"  Version: {self.version}")
+            print(f"  Last Update: {self.last_update}")
+            print(f"  Records: {self.num_records}")
+            print(f"  Header Length: {self.header_length}")
+            print(f"  Record Length: {self.record_length}")
+
+        except Exception as e:
+            raise ValueError(f"Error parsing DBF header: {e}")
 
     def _read_field_descriptors(self, f):
         """Read field descriptors."""
         self.fields = []
 
+        if self.header_length < 33:
+            raise ValueError(f"Invalid header length: {self.header_length}")
+
         # Calculate number of field descriptors
-        num_fields = (self.header_length - 33) // 32  # 33 = header + terminator
+        fields_section_length = self.header_length - 33  # 32 (header) + 1 (terminator)
+        num_fields = fields_section_length // 32
+
+        print(f"Expected {num_fields} field descriptors")
+
+        current_pos = f.tell()
+        print(f"Starting field descriptor read at position: {current_pos}")
 
         for i in range(num_fields):
             field_data = f.read(32)
             if len(field_data) < 32:
-                print(
-                    f"Warning: Field descriptor {i} is incomplete ({len(field_data)} bytes)"
-                )
-                break
+                print(f"Warning: Field descriptor {i} is incomplete ({len(field_data)} bytes)")
+                # Try to read what's available and pad the rest
+                if len(field_data) > 0:
+                    field_data += b'\x00' * (32 - len(field_data))
+                else:
+                    break
 
-            # Check if we've hit the terminator early
+            # Check if we've hit the terminator (0x0D) at the beginning
             if field_data[0] == 0x0D:
+                print(f"Found terminator at field {i}")
                 f.seek(-31, 1)  # Back up, keeping only the terminator
                 break
 
             try:
                 field = DBFFieldDescriptor.from_bytes(field_data)
+                print(f"Field {i}: {field.name.strip()} ({field.field_type}, {field.length})")
                 self.fields.append(field)
             except Exception as e:
                 print(f"Error parsing field descriptor {i}: {e}")
+                print(f"Field data (hex): {field_data.hex()}")
+                # Try to continue with next field
+                continue
+
+        # Find and read the terminator
+        max_search = 100  # Limit search to avoid infinite loop
+        terminator_found = False
+
+        for _ in range(max_search):
+            byte = f.read(1)
+            if not byte:
+                break
+            if byte == b'\x0D':
+                terminator_found = True
+                print("Found field descriptor terminator")
                 break
 
-        # Read field descriptor terminator (0x0D) if we haven't already
-        current_pos = f.tell()
-        terminator = f.read(1)
-        if terminator != b"\x0d":
-            # Try to find the terminator
-            f.seek(current_pos)
-            while True:
-                byte = f.read(1)
-                if not byte:
-                    raise ValueError(
-                        "Invalid DBF file: missing field descriptor terminator"
-                    )
-                if byte == b"\x0d":
-                    break
+        if not terminator_found:
+            print("Warning: Field descriptor terminator not found, continuing anyway")
+            # Reset to expected position
+            expected_pos = 32 + len(self.fields) * 32 + 1
+            f.seek(expected_pos)
 
     def _read_records(self, f):
         """Read all data records."""
@@ -162,7 +195,7 @@ class DBFReader:
 
             # Check deletion flag (first byte)
             deletion_flag = record_data[0:1]
-            if deletion_flag == b"*":
+            if deletion_flag == b'*':
                 continue  # Skip deleted records
 
             # Parse record data
@@ -175,42 +208,38 @@ class DBFReader:
         offset = 0
 
         for field in self.fields:
-            field_name = field.name.rstrip("\x00")
-            field_data = record_data[offset : offset + field.length]
+            field_name = field.name.rstrip('\x00')
+            field_data = record_data[offset:offset + field.length]
             offset += field.length
 
             # Convert field data based on type
-            value = self._convert_field_value(
-                field_data, field.field_type, field.decimal_count
-            )
+            value = self._convert_field_value(field_data, field.field_type, field.decimal_count)
             record[field_name] = value
 
         return record
 
-    def _convert_field_value(
-        self, data: bytes, field_type: str, decimal_count: int
-    ) -> Any:
+    def _convert_field_value(self, data: bytes, field_type: str, decimal_count: int) -> Any:
         """Convert field data to appropriate Python type."""
         try:
-            data_str = data.decode("ascii").strip()
+            data_str = data.decode('ascii').strip()
         except UnicodeDecodeError:
-            data_str = data.decode("latin-1").strip()
+            data_str = data.decode('latin-1').strip()
 
         if not data_str:
             return None
 
-        if field_type == "C":  # Character
+        if field_type == 'C':  # Character
             return data_str
-        elif field_type == "N":  # Numeric
+        elif field_type == 'N':  # Numeric
             if decimal_count > 0:
                 return float(data_str) if data_str else None
             else:
                 return int(data_str) if data_str else None
-        elif field_type == "F":  # Float
+        elif field_type == 'F':  # Float
             return float(data_str) if data_str else None
-        elif field_type == "L":  # Logical
-            return data_str.upper() in ("T", "Y", "1") if data_str else None
-        elif field_type == "D":  # Date
+        elif field_type == 'L':  # Logical
+            return data_str.upper() in ('T', 'Y', '1') if data_str else None
+        elif field_type == 'D':  # Date
             if len(data_str) == 8:
                 try:
                     year = int(data_str[:4])
@@ -220,7 +249,7 @@ class DBFReader:
                 except ValueError:
                     return None
             return None
-        elif field_type == "M":  # Memo
+        elif field_type == 'M':  # Memo
             return data_str
         else:
             return data_str  # Default to string
@@ -233,7 +262,7 @@ class DBFReader:
         # Convert records to column-oriented format
         columns = {}
         for field in self.fields:
-            field_name = field.name.rstrip("\x00")
+            field_name = field.name.rstrip('\x00')
             columns[field_name] = [record.get(field_name) for record in self.records]
 
         return pl.DataFrame(columns)
@@ -245,9 +274,7 @@ class DBFWriter:
     def __init__(self, file_path: Union[str, Path]):
         self.file_path = Path(file_path)
 
-    def write(
-        self, df: pl.DataFrame, field_specs: Optional[Dict[str, Dict[str, Any]]] = None
-    ):
+    def write(self, df: pl.DataFrame, field_specs: Optional[Dict[str, Dict[str, Any]]] = None):
         """Write Polars DataFrame to DBF file."""
         if df.is_empty():
             raise ValueError("Cannot write empty DataFrame to DBF")
@@ -260,12 +287,10 @@ class DBFWriter:
         fields = self._create_field_descriptors(df.columns, field_specs)
 
         # Calculate record length
-        record_length = 1 + sum(
-            field.length for field in fields
-        )  # +1 for deletion flag
+        record_length = 1 + sum(field.length for field in fields)  # +1 for deletion flag
 
         # Write DBF file
-        with open(self.file_path, "wb") as f:
+        with open(self.file_path, 'wb') as f:
             # Write header
             self._write_header(f, len(df), len(fields), record_length)
 
@@ -285,24 +310,22 @@ class DBFWriter:
             if dtype == pl.String:
                 # Calculate max string length
                 max_len = df[col_name].str.len_chars().max() or 10
-                field_specs[col_name] = {"type": "C", "length": min(max_len, 254)}
+                field_specs[col_name] = {'type': 'C', 'length': min(max_len, 254)}
             elif dtype in (pl.Int8, pl.Int16, pl.Int32, pl.Int64):
-                field_specs[col_name] = {"type": "N", "length": 18, "decimal": 0}
+                field_specs[col_name] = {'type': 'N', 'length': 18, 'decimal': 0}
             elif dtype in (pl.Float32, pl.Float64):
-                field_specs[col_name] = {"type": "F", "length": 20, "decimal": 6}
+                field_specs[col_name] = {'type': 'F', 'length': 20, 'decimal': 6}
             elif dtype == pl.Boolean:
-                field_specs[col_name] = {"type": "L", "length": 1}
+                field_specs[col_name] = {'type': 'L', 'length': 1}
             elif dtype == pl.Date:
-                field_specs[col_name] = {"type": "D", "length": 8}
+                field_specs[col_name] = {'type': 'D', 'length': 8}
             else:
                 # Default to character
-                field_specs[col_name] = {"type": "C", "length": 50}
+                field_specs[col_name] = {'type': 'C', 'length': 50}
 
         return field_specs
 
-    def _create_field_descriptors(
-        self, columns: List[str], field_specs: Dict[str, Dict[str, Any]]
-    ) -> List[DBFFieldDescriptor]:
+    def _create_field_descriptors(self, columns: List[str], field_specs: Dict[str, Dict[str, Any]]) -> List[DBFFieldDescriptor]:
         """Create field descriptors from column names and specifications."""
         fields = []
 
@@ -310,9 +333,9 @@ class DBFWriter:
             spec = field_specs[col_name]
             field = DBFFieldDescriptor(
                 name=col_name,
-                field_type=spec["type"],
-                length=spec["length"],
-                decimal_count=spec.get("decimal", 0),
+                field_type=spec['type'],
+                length=spec['length'],
+                decimal_count=spec.get('decimal', 0)
             )
             fields.append(field)
 
@@ -321,28 +344,18 @@ class DBFWriter:
     def _write_header(self, f, num_records: int, num_fields: int, record_length: int):
         """Write DBF header."""
         today = datetime.date.today()
-        header_length = (
-            32 + (num_fields * 32) + 1
-        )  # Header + field descriptors + terminator
+        header_length = 32 + (num_fields * 32) + 1  # Header + field descriptors + terminator
 
         header = struct.pack(
-            "<BBBBLHHHHHHHHHHH",
-            0x03,  # Version
-            today.year - 1900,  # Last update year
-            today.month,  # Last update month
-            today.day,  # Last update day
-            num_records,  # Number of records
-            header_length,  # Header length
-            record_length,  # Record length
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,  # Reserved fields
+            '<BBBBLHHHHHHHHHHH',
+            0x03,                    # Version
+            today.year - 1900,       # Last update year
+            today.month,             # Last update month
+            today.day,               # Last update day
+            num_records,             # Number of records
+            header_length,           # Header length
+            record_length,           # Record length
+            0, 0, 0, 0, 0, 0, 0, 0, 0  # Reserved fields
         )
 
         f.write(header)
@@ -351,93 +364,251 @@ class DBFWriter:
         """Write field descriptors."""
         for field in fields:
             # Write field descriptor (32 bytes)
-            field_name = field.name[:10].ljust(11, "\x00")
+            field_name = field.name[:10].ljust(11, '\x00')
             descriptor = struct.pack(
-                "<11sB4sBBB13sB",
-                field_name.encode("ascii"),
+                '<11sB4sBBB13sB',
+                field_name.encode('ascii'),
                 ord(field.field_type),
-                b"\x00\x00\x00\x00",  # Field data address (not used in file)
+                b'\x00\x00\x00\x00',  # Field data address (not used in file)
                 field.length,
                 field.decimal_count,
                 0,  # Reserved
-                b"\x00" * 13,  # Reserved
-                0,  # Work area ID
+                b'\x00' * 13,  # Reserved
+                0   # Work area ID
             )
             f.write(descriptor)
 
         # Write terminator
-        f.write(b"\x0d")
+        f.write(b'\x0D')
 
     def _write_records(self, f, df: pl.DataFrame, fields: List[DBFFieldDescriptor]):
         """Write data records."""
         for row in df.iter_rows(named=True):
             # Write deletion flag (space = not deleted)
-            f.write(b" ")
+            f.write(b' ')
 
             # Write field data
             for field in fields:
-                field_name = field.name.rstrip("\x00")
+                field_name = field.name.rstrip('\x00')
                 value = row.get(field_name)
                 field_data = self._format_field_value(value, field)
                 f.write(field_data)
 
         # Write end-of-file marker
-        f.write(b"\x1a")
+        f.write(b'\x1A')
 
     def _format_field_value(self, value: Any, field: DBFFieldDescriptor) -> bytes:
         """Format field value according to field type."""
         if value is None:
-            return b" " * field.length
+            return b' ' * field.length
 
         field_type = field.field_type
         length = field.length
 
-        if field_type == "C":  # Character
+        if field_type == 'C':  # Character
             str_val = str(value)[:length]
-            return str_val.ljust(length).encode("ascii", errors="replace")
-        elif field_type == "N":  # Numeric
+            return str_val.ljust(length).encode('ascii', errors='replace')
+        elif field_type == 'N':  # Numeric
             if field.decimal_count > 0:
-                format_str = f"{{:>{length}.{field.decimal_count}f}}"
+                format_str = f'{{:>{length}.{field.decimal_count}f}}'
             else:
-                format_str = f"{{:>{length}d}}"
+                format_str = f'{{:>{length}d}}'
             try:
-                formatted = format_str.format(
-                    float(value) if field.decimal_count > 0 else int(value)
-                )
-                return formatted.encode("ascii")
+                formatted = format_str.format(float(value) if field.decimal_count > 0 else int(value))
+                return formatted.encode('ascii')
             except (ValueError, OverflowError):
-                return b" " * length
-        elif field_type == "F":  # Float
+                return b' ' * length
+        elif field_type == 'F':  # Float
             try:
-                formatted = f"{float(value):>{length}.{field.decimal_count}f}"
-                return formatted.encode("ascii")
+                formatted = f'{float(value):>{length}.{field.decimal_count}f}'
+                return formatted.encode('ascii')
             except (ValueError, OverflowError):
-                return b" " * length
-        elif field_type == "L":  # Logical
-            return b"T" if value else b"F"
-        elif field_type == "D":  # Date
+                return b' ' * length
+        elif field_type == 'L':  # Logical
+            return b'T' if value else b'F'
+        elif field_type == 'D':  # Date
             if isinstance(value, datetime.date):
-                date_str = value.strftime("%Y%m%d")
-                return date_str.encode("ascii")
-            return b" " * length
+                date_str = value.strftime('%Y%m%d')
+                return date_str.encode('ascii')
+            return b' ' * length
         else:
             # Default to character
             str_val = str(value)[:length]
-            return str_val.ljust(length).encode("ascii", errors="replace")
+            return str_val.ljust(length).encode('ascii', errors='replace')
 
 
-# Convenience functions
-def read_dbf(file_path: Union[str, Path]) -> pl.DataFrame:
-    """Read DBF file and return Polars DataFrame."""
-    reader = DBFReader(file_path)
-    return reader.read()
+def read_dbf(file_path: Union[str, Path], debug: bool = False) -> pl.DataFrame:
+    """Read DBF file and return Polars DataFrame.
+
+    Args:
+        file_path: Path to the DBF file
+        debug: If True, print debugging information
+    """
+    try:
+        reader = DBFReader(file_path)
+        if debug:
+            print(f"Reading DBF file: {file_path}")
+            print(f"File size: {Path(file_path).stat().st_size} bytes")
+        return reader.read()
+    except Exception as e:
+        print(f"Error reading DBF file {file_path}: {e}")
+
+        # Try alternative reading approach
+        print("Attempting alternative parsing...")
+        return read_dbf_alternative(file_path)
 
 
-def write_dbf(
-    df: pl.DataFrame,
-    file_path: Union[str, Path],
-    field_specs: Optional[Dict[str, Dict[str, Any]]] = None,
-):
+def read_dbf_alternative(file_path: Union[str, Path]) -> pl.DataFrame:
+    """Alternative DBF reader with more flexible parsing."""
+    with open(file_path, 'rb') as f:
+        # Read first few bytes to identify format
+        header_bytes = f.read(32)
+        if len(header_bytes) < 32:
+            raise ValueError("File too small to be a valid DBF file")
+
+        print(f"First 32 bytes (hex): {header_bytes.hex()}")
+
+        # Parse basic header info
+        version = header_bytes[0]
+        num_records = struct.unpack('<L', header_bytes[4:8])[0]
+        header_length = struct.unpack('<H', header_bytes[8:10])[0]
+        record_length = struct.unpack('<H', header_bytes[10:12])[0]
+
+        print(f"Alternative parser - Version: {version}, Records: {num_records}")
+        print(f"Header length: {header_length}, Record length: {record_length}")
+
+        # Read field descriptors more carefully
+        f.seek(32)  # Start after header
+        fields = []
+
+        while f.tell() < header_length - 1:  # -1 for terminator
+            pos = f.tell()
+            field_data = f.read(32)
+
+            if len(field_data) < 32:
+                print(f"Incomplete field descriptor at position {pos}")
+                break
+
+            # Check for terminator
+            if field_data[0] == 0x0D:
+                print(f"Found terminator at position {pos}")
+                break
+
+            # Parse field descriptor manually
+            try:
+                name = field_data[0:11].rstrip(b'\x00').decode('ascii', errors='ignore')
+                if not name or not name.isprintable():
+                    print(f"Invalid field name at position {pos}, stopping")
+                    break
+
+                field_type = chr(field_data[11])
+                length = field_data[16] if len(field_data) > 16 else 10
+                decimal_count = field_data[17] if len(field_data) > 17 else 0
+
+                field = DBFFieldDescriptor(name, field_type, length, decimal_count)
+                fields.append(field)
+                print(f"Field: {name} ({field_type}, {length})")
+
+            except Exception as e:
+                print(f"Error parsing field at position {pos}: {e}")
+                break
+
+        if not fields:
+            raise ValueError("No valid field descriptors found")
+
+        # Find start of data records
+        f.seek(header_length)
+
+        # Read records
+        records = []
+        expected_record_size = sum(field.length for field in fields) + 1  # +1 for deletion flag
+
+        print(f"Expected record size: {expected_record_size}, DBF record length: {record_length}")
+
+        for i in range(min(num_records, 1000)):  # Limit to first 1000 records for safety
+            record_data = f.read(record_length)
+            if len(record_data) < record_length:
+                print(f"Incomplete record {i}")
+                break
+
+            # Check deletion flag
+            if record_data[0:1] == b'*':
+                continue  # Skip deleted records
+
+            # Parse record
+            record = {}
+            offset = 1  # Skip deletion flag
+
+            for field in fields:
+                if offset + field.length > len(record_data):
+                    print(f"Record {i}: field {field.name} extends beyond record")
+                    break
+
+                field_data = record_data[offset:offset + field.length]
+                offset += field.length
+
+                # Convert field value
+                try:
+                    value = convert_field_value_safe(field_data, field.field_type, field.decimal_count)
+                    record[field.name.strip()] = value
+                except Exception as e:
+                    print(f"Error converting field {field.name}: {e}")
+                    record[field.name.strip()] = None
+
+            if record:  # Only add if we successfully parsed some fields
+                records.append(record)
+
+        print(f"Successfully parsed {len(records)} records")
+
+        if not records:
+            return pl.DataFrame()
+
+        # Create DataFrame
+        columns = {}
+        for field in fields:
+            field_name = field.name.strip()
+            columns[field_name] = [record.get(field_name) for record in records]
+
+        return pl.DataFrame(columns)
+
+
+def convert_field_value_safe(data: bytes, field_type: str, decimal_count: int) -> Any:
+    """Safely convert field data to appropriate Python type."""
+    try:
+        data_str = data.decode('ascii', errors='ignore').strip()
+    except:
+        data_str = ''
+
+    if not data_str:
+        return None
+
+    try:
+        if field_type == 'C':  # Character
+            return data_str
+        elif field_type == 'N':  # Numeric
+            if decimal_count > 0:
+                return float(data_str)
+            else:
+                return int(data_str)
+        elif field_type == 'F':  # Float
+            return float(data_str)
+        elif field_type == 'L':  # Logical
+            return data_str.upper() in ('T', 'Y', '1')
+        elif field_type == 'D':  # Date
+            if len(data_str) == 8 and data_str.isdigit():
+                year = int(data_str[:4])
+                month = int(data_str[4:6])
+                day = int(data_str[6:8])
+                return datetime.date(year, month, day)
+            return None
+        else:
+            return data_str
+    except:
+        return None
+
+
+def write_dbf(df: pl.DataFrame, file_path: Union[str, Path],
+             field_specs: Optional[Dict[str, Dict[str, Any]]] = None):
     """Write Polars DataFrame to DBF file."""
     writer = DBFWriter(file_path)
     writer.write(df, field_specs)
@@ -446,43 +617,41 @@ def write_dbf(
 # Example usage
 if __name__ == "__main__":
     # Create sample data
-    sample_data = pl.DataFrame(
-        {
-            "ID": [1, 2, 3, 4, 5],
-            "NAME": ["Alice", "Bob", "Charlie", "Diana", "Eve"],
-            "AGE": [25, 30, 35, 28, 32],
-            "SALARY": [50000.0, 75000.0, 80000.0, 65000.0, 70000.0],
-            "ACTIVE": [True, True, False, True, True],
-            "HIRE_DATE": [
-                datetime.date(2020, 1, 15),
-                datetime.date(2019, 3, 22),
-                datetime.date(2018, 7, 10),
-                datetime.date(2021, 5, 8),
-                datetime.date(2020, 11, 30),
-            ],
-        }
-    )
+    sample_data = pl.DataFrame({
+        'ID': [1, 2, 3, 4, 5],
+        'NAME': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],
+        'AGE': [25, 30, 35, 28, 32],
+        'SALARY': [50000.0, 75000.0, 80000.0, 65000.0, 70000.0],
+        'ACTIVE': [True, True, False, True, True],
+        'HIRE_DATE': [
+            datetime.date(2020, 1, 15),
+            datetime.date(2019, 3, 22),
+            datetime.date(2018, 7, 10),
+            datetime.date(2021, 5, 8),
+            datetime.date(2020, 11, 30)
+        ]
+    })
 
     # Write to DBF
     print("Writing sample data to DBF file...")
-    write_dbf(sample_data, "sample.dbf")
+    write_dbf(sample_data, 'sample.dbf')
 
     # Read back from DBF
     print("Reading data back from DBF file...")
-    df_read = read_dbf("sample.dbf")
+    df_read = read_dbf('sample.dbf')
     print(df_read)
 
     # Custom field specifications example
     custom_specs = {
-        "ID": {"type": "N", "length": 10, "decimal": 0},
-        "NAME": {"type": "C", "length": 30},
-        "AGE": {"type": "N", "length": 3, "decimal": 0},
-        "SALARY": {"type": "F", "length": 12, "decimal": 2},
-        "ACTIVE": {"type": "L", "length": 1},
-        "HIRE_DATE": {"type": "D", "length": 8},
+        'ID': {'type': 'N', 'length': 10, 'decimal': 0},
+        'NAME': {'type': 'C', 'length': 30},
+        'AGE': {'type': 'N', 'length': 3, 'decimal': 0},
+        'SALARY': {'type': 'F', 'length': 12, 'decimal': 2},
+        'ACTIVE': {'type': 'L', 'length': 1},
+        'HIRE_DATE': {'type': 'D', 'length': 8}
     }
 
     print("\nWriting with custom field specifications...")
-    write_dbf(sample_data, "sample_custom.dbf", custom_specs)
-    df_custom = read_dbf("sample_custom.dbf")
+    write_dbf(sample_data, 'sample_custom.dbf', custom_specs)
+    df_custom = read_dbf('sample_custom.dbf')
     print(df_custom)
